@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Post{% endblock %}
+{% block content %}
+<div class="col s12">
+    <h3>New Comment</h3>
+    <form method="post" action="{{ url_for('post',post_id=post.id) }}">
+        {{ form.hidden_tag() }}
+        <div class="input-field s12">
+            {{ form.name.label }}
+            {% if form.name.errors %}
+            {% for e in form.name.errors %}
+            <p data-error="wrong" data-success="right">{{ e }}</p>
+            {% endfor %}
+            {% endif %}
+            {{ form.name(class_='validate') }}
+        </div>
+        <div class="input-field s12">
+            {{ form.text.label }}
+            {% if form.text.errors %}
+            {% for e in form.text.errors %}
+            <p data-error="wrong" data-success="right">{{ e }}</p>
+            {% endfor %}
+            {% endif %}
+            {{ form.text(class_='materialize-textarea') }}
+        </div>
+        <input type="submit" class="waves-effect waves-light btn" value="提交">
+    </form>
+</div>
+
+<div class="row">
+    <h3>{{ post.title }}</h3>
+    {% for tag in tags %}
+    <p>{{ tag.title }}</p>
+    {% endfor %}
+    <div class="col s9"><p>{{ post.text }}</p>
+        <p>{{ post.publish_data }}</p>
+        {% for comment in comments %}
+        <p>{{ comment.text }}</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock %}

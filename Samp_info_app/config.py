@@ -1,12 +1,13 @@
 import os
 
 class Config(object):
+    # cat /dev/urandom | tr -cd 'a-f0-9' | head -c 32 获取随机字符
+    SECRET_KEY = '40f3fea290191b1878144f83f2e3f3ef'
+
+class ProdConfig(Config):
     pass
 
-class ProdConfig(object):
-    pass
-
-class DevConfig(object):
+class DevConfig(Config):
     DEBUG = True
     DIALECT = "mysql"
     DRIVER = 'pymysql'
@@ -14,6 +15,6 @@ class DevConfig(object):
     PASSWORD = os.environ.get('SQL_PASSWORD')
     HOST = '127.0.0.1'
     PORT = '3306'
-    DATEBASE = os.environ.get('SQL_DATEBASE')
-    MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME,PASSWORD,DATEBASE)
+    DATABASE = os.environ.get('SQL_DATABASE')
+    MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME,PASSWORD,DATABASE)
     SQLALCHEMY_DATABASE_URI = MY_SQL
