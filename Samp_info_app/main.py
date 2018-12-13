@@ -32,6 +32,7 @@ class Post(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String(255))
     text = db.Column(db.Text())
+    publish_data = db.Column(db.DateTime())
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('post', lazy='dynamic'))
@@ -57,6 +58,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(255))
     text = db.Column(db.Text())
+    data = db.Column(db.DateTime())
     post_id = db.Column(db.Integer(), db.ForeignKey('post.id'))
 
 
@@ -65,9 +67,22 @@ class Comment(db.Model):
 
 
 
+from sqlalchemy import func
+
+def sidebar_data():
+    recent = Post.query.order_by(Post.publish_data.desc()).limit(5).all()
+    top_tags = db.session.query(Tag,func.count(tags.c.post_id).label('total')).join(tags).group_by(Tag).order_by('total DESC').limit(5).all()
+    return recent, top_tags
+
+
 @app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/<int:page>')
+def index(page=1):
+    posts = Post.query.order_by(
+        Post.publish_data.desc()
+    ).paginate(page,10)
+    recent, top_tags = sidebar_data()
+    return render_template('index.html',posts=posts,recent=recent,top_tags=top_tags)
 
 
 if __name__ == "__main__":

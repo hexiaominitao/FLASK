@@ -1,5 +1,13 @@
-<p>{{ hah | default('hah') }}</p>
-<p>{{ 75 | float }}</p>
-<p>{{ 3.14 | int }}</p>
-<h1>{{ 'he min' | title }}</h1>
-<p>{{ request.url }}</p>
+{#<p>{{ hah | default('hah') }}</p>#}
+{#<p>{{ 75 | float }}</p>#}
+{#<p>{{ 3.14 | int }}</p>#}
+{#<h1>{{ 'he min' | title }}</h1>#}
+{#<p>{{ request.url }}</p>#}
+
+
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<p>hello world</p>
+{% endblock %}
