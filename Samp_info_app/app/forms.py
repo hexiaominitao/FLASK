@@ -4,12 +4,13 @@ from wtforms.validators import DataRequired, Length,EqualTo,URL
 from app.models import User,Post,Tag,Comment
 
 class CommentFrom(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(max=255)])
-    text = TextAreaField('Comment', validators=[DataRequired()])
+    name = StringField('姓名', validators=[DataRequired(), Length(max=255)])
+    text = TextAreaField('评论', validators=[DataRequired()])
 
 class LoginForm(FlaskForm):
     username = StringField('用户名',[DataRequired(),Length(max=255)])
     password = PasswordField('密码',[DataRequired()])
+    remember = BooleanField('记住我')
 
     def validata(self):
         check_validate = super(LoginForm, self).validata()
@@ -43,3 +44,4 @@ class RegisterForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('标题',[DataRequired(),Length(max=255)])
     text = TextAreaField('文章内容',[DataRequired()])
+
