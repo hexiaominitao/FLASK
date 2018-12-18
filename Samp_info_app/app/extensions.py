@@ -1,12 +1,14 @@
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask_principal import Principal,Permission,RoleNeed
-
+from flask_principal import Principal, Permission, RoleNeed
+from flask_admin import Admin
+from flask_cache import Cache
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 principal = Principal()
-
+admin = Admin()
+cache = Cache()
 
 login_manager.login_view = "main.login"
 login_manager.session_protection = "strong"

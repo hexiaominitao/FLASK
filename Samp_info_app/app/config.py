@@ -1,4 +1,6 @@
 import os
+import tempfile
+
 
 class Config(object):
     # cat /dev/urandom | tr -cd 'a-f0-9' | head -c 32 获取随机字符
@@ -6,8 +8,10 @@ class Config(object):
     RECAPTCHA_PUBLIC_KEY = '6LeKgIEUAAAAAFxgWOvLHrWt89IWO3v0qFlzQfaJ'
     RECAPTCHA_PRIVATE_KEY = '6LeKgIEUAAAAAICNkNTkHXEhNttIL3ncm-a7cJFB'
 
+
 class ProdConfig(Config):
-    pass
+    CACHE_TYPE = 'simple'
+
 
 class DevConfig(Config):
     DEBUG = True
@@ -18,5 +22,19 @@ class DevConfig(Config):
     HOST = '127.0.0.1'
     PORT = '3306'
     DATABASE = os.environ.get('SQL_DATABASE')
-    MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME,PASSWORD,DATABASE)
+    MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME, PASSWORD, DATABASE)
     SQLALCHEMY_DATABASE_URI = MY_SQL
+    CACHE_TYPE = 'null'
+
+
+class TestConfig(Config):
+    db_file = tempfile.NamedTemporaryFile()
+    DEBUG = True
+    DEBUG_TB_ENABLED = False
+
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + db_file.name
+    CACHE_TYPE = 'null'
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 25
+    MAIL_USERNAME = ''
+    MAIL_PASSWORD = ''
