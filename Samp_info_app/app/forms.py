@@ -1,15 +1,20 @@
 from flask_wtf import FlaskForm, RecaptchaField
+from flask_wtf.file import FileField, FileRequired, FileAllowed  # 文件上传模块
 from wtforms import StringField, TextAreaField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length,EqualTo,URL
-from app.models import User,Post,Tag,Comment
+from wtforms.validators import DataRequired, Length, EqualTo, URL
+from app.models import User, Post, Tag, Comment
+
+from .extensions import file_bam_qc, file_fastq_qc, file_sample_info
+
 
 class CommentFrom(FlaskForm):
     name = StringField('姓名', validators=[DataRequired(), Length(max=255)])
     text = TextAreaField('评论', validators=[DataRequired()])
 
+
 class LoginForm(FlaskForm):
-    username = StringField('用户名',[DataRequired(),Length(max=255)])
-    password = PasswordField('密码',[DataRequired()])
+    username = StringField('用户名', [DataRequired(), Length(max=255)])
+    password = PasswordField('密码', [DataRequired()])
     remember = BooleanField('记住我')
 
     def validata(self):
@@ -25,10 +30,11 @@ class LoginForm(FlaskForm):
             return False
         return True
 
+
 class RegisterForm(FlaskForm):
-    username = StringField('用户名',[DataRequired(),Length(max=255)])
-    password = PasswordField('密码',[DataRequired(),Length(min=8)])
-    confirm = PasswordField('确认密码',[DataRequired(),EqualTo('password')])
+    username = StringField('用户名', [DataRequired(), Length(max=255)])
+    password = PasswordField('密码', [DataRequired(), Length(min=8)])
+    confirm = PasswordField('确认密码', [DataRequired(), EqualTo('password')])
     recaptcha = RecaptchaField()
 
     def validate(self):
@@ -41,7 +47,19 @@ class RegisterForm(FlaskForm):
             return False
         return True
 
-class PostForm(FlaskForm):
-    title = StringField('标题',[DataRequired(),Length(max=255)])
-    text = TextAreaField('文章内容',[DataRequired()])
 
+class PostForm(FlaskForm):
+    title = StringField('标题', [DataRequired(), Length(max=255)])
+    text = TextAreaField('文章内容', [DataRequired()])
+
+
+class SampleUploadForm(FlaskForm):
+    file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_sample_info)])
+
+
+class FastqUploadForm(FlaskForm):
+    file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_fastq_qc)])
+
+
+class BamUploadForm(FlaskForm):
+    file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_bam_qc)])

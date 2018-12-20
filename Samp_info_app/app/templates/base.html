@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}-迈景报告系统</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+<ul id="dropdown1" class="dropdown-content">
+    <li><a href="{{ url_for('sam_bp.fastq_qc') }}">FASTQ</a></li>
+    <li><a href="{{ url_for('sam_bp.bam_qc') }}">BAM</a></li>
+    <!--<li class="divider"></li>-->
+</ul>
+<nav>
+    <div class="nav-wrapper teal lighten-2">
+        <a href="{{ url_for('sam_bp.index') }}" class="brand-logo center red-text accent-4-text">Mygene</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <!--<li><a href="{{ url_for('sam_bp.index') }}">主页</a></li>-->
+            <li><a href="{{ url_for('sam_bp.sample_info') }}">样本信息</a></li>
+            <!--<li><a href="#">质控信息</a></li>-->
+            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">质控信息<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+        </ul>
+
+        <ul class="right hide-on-med-and-down">
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('admin.index') }}">{{ current_user.username }}</a></li>
+            <li><a href="{{ url_for('main.logout') }}">注销</a></li>
+            {% else %}
+            <li><a href="{{ url_for('main.login') }}">登录</a></li>
+            <li><a href="{{ url_for('main.register') }}">注册</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<div class="content">
+    <div class="fixed-action-btn vertical">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a href="{{ url_for('main.login') }}" class="btn-floating red"><i
+                    class="material-icons">insert_chart</i></a></li>
+            <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+            <li><a href="{{ url_for('sam_bp.upload_sam') }}" class="btn-floating green"><i class="material-icons">publish</i></a>
+            </li>
+            <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+        </ul>
+    </div>
+    {% block content %}{% endblock %}
+</div>
+
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+{% block js %}
+{% endblock %}
+</body>
+</html>

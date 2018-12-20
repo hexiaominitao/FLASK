@@ -10,7 +10,20 @@ class Config(object):
 
 
 class ProdConfig(Config):
-    CACHE_TYPE = 'simple'
+    # CACHE_TYPE = 'simple'
+    DIALECT = "mysql"
+    DRIVER = 'pymysql'
+    USERNAME = os.environ.get('SQL_USERNAME')
+    PASSWORD = os.environ.get('SQL_PASSWORD')
+    HOST = '127.0.0.1'
+    PORT = '3306'
+    DATABASE = os.environ.get('SQL_DATABASE')
+    MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME, PASSWORD, DATABASE)
+    SQLALCHEMY_DATABASE_URI = MY_SQL
+    CACHE_TYPE = 'null'
+    UPLOADED_FILESAM_DEST = 'app/static/up_file'
+    UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
+    UPLOADED_FILEBAM_DEST = 'app/static/up_file'
 
 
 class DevConfig(Config):
@@ -25,6 +38,9 @@ class DevConfig(Config):
     MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME, PASSWORD, DATABASE)
     SQLALCHEMY_DATABASE_URI = MY_SQL
     CACHE_TYPE = 'null'
+    UPLOADED_FILESAM_DEST = 'app/static/up_file'
+    UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
+    UPLOADED_FILEBAM_DEST = 'app/static/up_file'
 
 
 class TestConfig(Config):

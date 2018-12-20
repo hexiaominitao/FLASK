@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="col s12">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="input-field s12">
+            {{ form.username.label }}
+            {% if form.username.errors %}
+            {% for e in form.username.errors %}
+            <p data-error="wrong" data-success="right">{{ e }}</p>
+            {% endfor %}
+            {% endif %}
+            {{ form.username(class_='validate') }}
+        </div>
+        <div class="input-field s12">
+            {{ form.password.label }}
+            {% if form.password.errors %}
+            {% for e in form.password.errors %}
+            <p data-error="wrong" data-success="right">{{ e }}</p>
+            {% endfor %}
+            {% endif %}
+            {{ form.password(class_='validate') }}
+        </div>
+        <!--<div class="switch">-->
+            <!--{{ form.remember.label }}-->
+            <!--{% if form.remember.errors %}-->
+            <!--{% for e in form.remember.errors %}-->
+            <!--<p data-error="wrong" data-success="right">{{ e }}</p>-->
+            <!--{% endfor %}-->
+            <!--{% endif %}-->
+            <!--{{ form.remember(type='checkbox',class_='lever') }}-->
+        <!--</div>-->
+        <input type="submit" class="waves-effect waves-light btn" value="登录">
+    </form>
+</div>
+{% endblock %}

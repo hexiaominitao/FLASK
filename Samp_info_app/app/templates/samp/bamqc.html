@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}BAM质控信息{% endblock %}
+{% block content %}
+<div class="table-responsive">
+
+    <table class="responsive-table centered highlight striped">
+ <caption style="text-align:left">bam质控信息</caption>
+        <tr>
+            <th>迈景编号</th>
+            <th>样本编号</th>
+            <th>样本类型</th>
+            <th>平台</th>
+            <th>总reads数</th>
+            <th>数据量</th>
+            <th>比对率</th>
+            <th>PCR重复</th>
+            <th>在靶率</th>
+            <th>平均深度</th>
+            <th>平均深度(去重)</th>
+            <th>均一性>0% AD</th>
+            <th>均一性>10% AD</th>
+            <th>均一性>20% AD</th>
+            <th>均一性>50% AD</th>
+            <th>均一性>100% AD</th>
+            <th>均一性>200% AD</th>
+            <th>均一性>300% AD</th>
+
+
+
+
+        </tr>
+        {% if status %}
+        {% for row in status %}
+        <tr>
+            <td>{{ row.申请单号 }}</td>
+            <td>{{ row.迈景编号 }}</td>
+            <td><span>{{ row.检测项目 }}
+            </span></td>
+            <!--<td>{{ row.临床诊断 }}</td>-->
+            <td>{{ row.病理诊断 }}</td>
+            <td>{{ row.样本类型 }}</td>
+            <td>{{ row.肿瘤细胞含量 }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        {% for row in status_all %}
+        <tr>
+            <td>{{ row.申请单号 }}</td>
+            <td>{{ row.迈景编号 }}</td>
+            <td>{{ row.检测项目 }}</td>
+            <!--<td>{{ row.临床诊断 }}</td>-->
+            <td>{{ row.病理诊断 }}</td>
+            <td>{{ row.样本类型 }}</td>
+            <td>{{ row.肿瘤细胞含量 }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+
+</div>
+{% endblock %}

@@ -37,6 +37,10 @@ def set_up():
     default_role.description = 'default'
     db.session.add(default_role)
 
+    # default_role = Role(name='default') #添加权限 联系 extensions
+    # default_role.description = 'default'
+    # db.session.add(default_role)
+
     admin = User(username='admin')
     admin.set_password("hm714012636")
     admin.roles.append(admin_role)

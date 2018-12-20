@@ -3,6 +3,7 @@ from flask_login import LoginManager
 from flask_principal import Principal, Permission, RoleNeed
 from flask_admin import Admin
 from flask_cache import Cache
+from flask_uploads import UploadSet, DOCUMENTS, DATA
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
@@ -10,12 +11,16 @@ principal = Principal()
 admin = Admin()
 cache = Cache()
 
+file_sample_info = UploadSet('filesam', DOCUMENTS)
+file_fastq_qc = UploadSet('filefastq', DATA)
+file_bam_qc = UploadSet('filebam', DOCUMENTS)
+
 login_manager.login_view = "main.login"
 login_manager.session_protection = "strong"
 login_manager.login_message = "Please login to access this page"
 login_manager.login_message_category = "info"
 
-admin_permission = Permission(RoleNeed('admin'))
+admin_permission = Permission(RoleNeed('admin'))  # 添加权限 与manage 对应
 poster_permission = Permission(RoleNeed('poster'))
 default_permission = Permission(RoleNeed('default'))
 

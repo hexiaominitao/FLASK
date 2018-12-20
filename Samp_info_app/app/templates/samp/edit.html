@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Post{% endblock %}
+{% block content %}
+<div class="row">
+    <h1 class="center-align">新建文章</h1>
+    <form action="{{ url_for('.edit_post',id=post.id) }}">
+        {{ form.hidden_tag() }}
+        <div class="input-field s12">
+            {{ form.title.lable }}
+            {% if form.title.errors %}
+            {% for e in form.title.errors %}
+            <div class="chip">
+                {{ e }}
+                <i class="close material-icons">close</i>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {{ form.title(class_='validate',value=post.title) }}
+        </div>
+        <div class="input-field s12">
+            {{ form.text.lable }}
+            {% if form.text.errors %}
+            {% for e in form.text.errors %}
+            <div class="chip">
+                {{ e }}
+                <i class="close material-icons">close</i>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {{ form.text(class_='materialize-textarea') }}
+        </div>
+         <input type="submit" class="waves-effect waves-light btn" value="发表">
+    </form>
+</div>
+{% endblock %}
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.1/ckeditor.js"></script>
+{% endblock %}

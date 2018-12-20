@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}样本信息{% endblock %}
+{% block content %}
+<form action="#">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="输入编号" name="name_id">
+    </div>
+    <button type="submit" class="btn btn-default">查找</button>
+</form>
+<br>
+<div class="table-responsive">
+
+    <table class="responsive-table centered highlight striped">
+        <caption style="text-align:left">样本信息</caption>
+        <tr>
+            <th>申请单号</th>
+            <th>迈景编号</th>
+            <th>检测项目</th>
+            <th>临床诊断</th>
+            <th>病理诊断</th>
+            <th>样本类型</th>
+            <th>细胞含量</th>
+        </tr>
+        {% if status %}
+        {% for row in status %}
+        <tr>
+            <td>{{ row.申请单号 }}</td>
+            <td>{{ row.迈景编号 }}</td>
+            <td><span>{{ row.检测项目 }}
+            </span></td>
+            <td>{{ row.临床诊断 }}</td>
+            <td>{{ row.病理诊断 }}</td>
+            <td>{{ row.样本类型 }}</td>
+            <td>{{ row.肿瘤细胞含量 }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        {% for row in status_all %}
+        <tr>
+            <td>{{ row.申请单号 }}</td>
+            <td>{{ row.迈景编号 }}</td>
+            <td>{{ row.检测项目 }}</td>
+            <td>{{ row.临床诊断 }}</td>
+            <td>{{ row.病理诊断 }}</td>
+            <td>{{ row.样本类型 }}</td>
+            <td>{{ row.肿瘤细胞含量 }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+
+</div>
+{% endblock %}
