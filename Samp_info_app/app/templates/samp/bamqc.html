@@ -4,7 +4,7 @@
 <div class="table-responsive">
 
     <table class="responsive-table centered highlight striped">
- <caption style="text-align:left">bam质控信息</caption>
+        <caption style="text-align:left">bam质控信息</caption>
         <tr>
             <th>迈景编号</th>
             <th>样本编号</th>
@@ -24,34 +24,28 @@
             <th>均一性>100% AD</th>
             <th>均一性>200% AD</th>
             <th>均一性>300% AD</th>
-
-
-
-
         </tr>
         {% if status %}
         {% for row in status %}
         <tr>
-            <td>{{ row.申请单号 }}</td>
             <td>{{ row.迈景编号 }}</td>
-            <td><span>{{ row.检测项目 }}
-            </span></td>
-            <!--<td>{{ row.临床诊断 }}</td>-->
-            <td>{{ row.病理诊断 }}</td>
+            <td>{{ row.样本编号 }}</td>
             <td>{{ row.样本类型 }}</td>
-            <td>{{ row.肿瘤细胞含量 }}</td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        {% for row in status_all %}
-        <tr>
-            <td>{{ row.申请单号 }}</td>
-            <td>{{ row.迈景编号 }}</td>
-            <td>{{ row.检测项目 }}</td>
-            <!--<td>{{ row.临床诊断 }}</td>-->
-            <td>{{ row.病理诊断 }}</td>
-            <td>{{ row.样本类型 }}</td>
-            <td>{{ row.肿瘤细胞含量 }}</td>
+            <td>{{ row.平台 }}</td>
+            <td>{{ row.总reads数 }}</td>
+            <td>{{ row.数据量 }}</td>
+            <td>{{ row.比对率 }}</td>
+            <td>{{ row.PCR重复 }}</td>
+            <td>{{ row.在靶率 }}</td>
+            <td>{{ row.平均深度 }}</td>
+            <td>{{ row.平均深度_去重 }}</td>
+            <td>{{ row.均一性0 }}</td>
+            <td>{{ row.均一性10 }}</td>
+            <td>{{ row.均一性20 }}</td>
+            <td>{{ row.均一性50 }}</td>
+            <td>{{ row.均一性100 }}</td>
+            <td>{{ row.均一性200 }}</td>
+            <td>{{ row.均一性300 }}</td>
         </tr>
         {% endfor %}
         {% endif %}

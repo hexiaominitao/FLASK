@@ -5,12 +5,13 @@
 {% endblock %}
 {% block content %}
 <div class="nav-wrapper search-bar teal lighten-4">
-    <form action="#">
+    <form action="{{ url_for('sam_bp.sample_info') }}">
         <div class="input-field">
-            <input id="search" type="search" required>
+            <input id="search" type="search" required name="name_id">
             <label class="label-icon" for="search"><i class="material-icons">search</i></label>
             <i class="material-icons">close</i>
         </div>
     </form>
 </div>
+
 {% endblock %}
