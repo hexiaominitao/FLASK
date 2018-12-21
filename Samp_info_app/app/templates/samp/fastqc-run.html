@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}FASTQ质控信息{% endblock %}
+{% block content %}
+<div class="table-responsive">
+
+    <table class="responsive-table highlight striped">
+ <caption style="text-align:left"><h5>Fastq质控信息</h5></caption>
+        <tr>
+            <th>Runname</a></th>
+            <th>总Reads数</th>
+
+
+        </tr>
+        {% if status %}
+        {% for row in status %}
+        <tr>
+            <td><a href="{{ url_for('sam_bp.fastq_qc',run_name=row) }}">{{ row }}</a></td>
+            <!--<td>{{ row.Reads数 }}</td>-->
+            <td></td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+
+</div>
+{% endblock %}

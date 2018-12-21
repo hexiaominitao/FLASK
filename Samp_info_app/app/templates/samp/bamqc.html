@@ -4,7 +4,7 @@
 <div class="table-responsive">
 
     <table class="responsive-table centered highlight striped">
-        <caption style="text-align:left">bam质控信息</caption>
+        <caption style="text-align:left"><h5>bam质控信息</h5></caption>
         <tr>
             <th>迈景编号</th>
             <th>样本编号</th>
@@ -34,18 +34,18 @@
             <td>{{ row.平台 }}</td>
             <td>{{ row.总reads数 }}</td>
             <td>{{ row.数据量 }}</td>
-            <td>{{ row.比对率 }}</td>
-            <td>{{ row.PCR重复 }}</td>
-            <td>{{ row.在靶率 }}</td>
+            <td>{{ row.比对率 | float_to_percent  }}</td>
+            <td>{{ row.PCR重复 | float_to_percent  }}</td>
+            <td>{{ row.在靶率 | float_to_percent  }}</td>
             <td>{{ row.平均深度 }}</td>
             <td>{{ row.平均深度_去重 }}</td>
-            <td>{{ row.均一性0 }}</td>
-            <td>{{ row.均一性10 }}</td>
-            <td>{{ row.均一性20 }}</td>
-            <td>{{ row.均一性50 }}</td>
-            <td>{{ row.均一性100 }}</td>
-            <td>{{ row.均一性200 }}</td>
-            <td>{{ row.均一性300 }}</td>
+            <td>{{ row.均一性0 | float_to_percent  }}</td>
+            <td>{{ row.均一性10 | float_to_percent  }}</td>
+            <td>{{ row.均一性20 | float_to_percent  }}</td>
+            <td>{{ row.均一性50 | float_to_percent  }}</td>
+            <td>{{ row.均一性100 | float_to_percent  }}</td>
+            <td>{{ row.均一性200 | float_to_percent  }}</td>
+            <td>{{ row.均一性300 | float_to_percent  }}</td>
         </tr>
         {% endfor %}
         {% endif %}

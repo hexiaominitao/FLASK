@@ -21,6 +21,13 @@ def sidebar_data():
     return recent, top_tags
 
 
+def float_to_percent(float_value):
+    per = '{}%'.format((str(round(float_value,4) * 100))[:5])
+    return per
+sam_bp.add_app_template_filter(float_to_percent,'float_to_percent') #添加jinja2过滤器
+
+
+
 @sam_bp.route('/')
 def index():
     return render_template('index.html')
@@ -159,7 +166,7 @@ def upload_sam():
 
         for file in os.listdir(path_zip):
             if file:
-                file_vcf = path.join(path_zip,file)
+                file_vcf = path.join(path_zip, file)
                 df, index_qc = file_to_df(file_vcf)
 
                 for item in index_qc:
@@ -247,11 +254,30 @@ def sample_detail(sample_id):
 
 
 @sam_bp.route('/fastqc/', methods=['GET', 'POST'])
-def fastq_qc():
+def fastqc():
+    df = Fastqc.query.all()
+    run_name = []
+    for row in df:
+        run_name.append(row.迈景编号)
+
+    def dedupe(items):
+        seen = set()
+        for item in items:
+            if item not in seen:
+                yield item
+            seen.add(item)
+        return seen
+
+    status = list(dedupe(run_name))
+    return render_template('fastqc-run.html', status=status)
+
+
+@sam_bp.route('/fastqc/<run_name>', methods=['GET', 'POST'])
+def fastq_qc(run_name):
     df = {
-        'status': Fastqc.query.all()
+        'status': Fastqc.query.filter(Fastqc.迈景编号 == run_name).all()
     }
-    return render_template('fastqc.html',**df)
+    return render_template('fastqc.html', **df, run_name=run_name)
 
 
 @sam_bp.route('/bamqc/', methods=['GET', 'POST'])

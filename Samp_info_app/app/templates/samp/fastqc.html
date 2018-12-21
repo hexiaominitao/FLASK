@@ -4,9 +4,9 @@
 <div class="table-responsive">
 
     <table class="responsive-table highlight striped">
- <caption style="text-align:left">fastq质控信息</caption>
+        <caption style="text-align:left"><h5>Run-{{ run_name }}-<a href="{{ url_for('sam_bp.fastqc') }}">Fastq质控信息</a></h5>
+        </caption>
         <tr>
-            <th>Runname</th>
             <th>样本编号</th>
             <th>Reads数</th>
             <th>Reads占比</th>
@@ -14,20 +14,19 @@
             <th>Q20</th>
             <th>Q30</th>
             <th>GC比例</th>
-            <th>N比例</th>
+            <th>N-count</th>
 
         </tr>
         {% if status %}
         {% for row in status %}
         <tr>
-            <td>{{ row.迈景编号 }}</td>
             <td>{{ row.样本编号 }}</td>
             <td>{{ row.Reads数 }}</td>
-            <td>{{ row.Reads占比 }}</td>
+            <td>{{ row.Reads占比 | float_to_percent }}</td>
             <!--<td>{{ row.Base数 }}</td>-->
-            <td>{{ row.Q20 }}</td>
-            <td>{{ row.Q30 }}</td>
-            <td>{{ row.GC比例 }}</td>
+            <td>{{ row.Q20 | float_to_percent }}</td>
+            <td>{{ row.Q30 | float_to_percent }}</td>
+            <td>{{ row.GC比例 | float_to_percent }}</td>
             <td>{{ row.N比例 }}</td>
         </tr>
         {% endfor %}
