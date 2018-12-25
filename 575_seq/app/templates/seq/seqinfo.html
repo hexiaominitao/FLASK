@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}详情{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+{% block content %}
+<div class="row container">
+    <div class="col s12">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="input-field col s4">
+                    {{ form.sample.label }}
+                    {% if form.sample.errors %}
+                    {% for e in form.sample.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.sample(class_='validate') }}
+                </div>
+                <div class="input-field col s4">
+                    {{ form.item.label }}
+                    {% if form.item.errors %}
+                    {% for e in form.item.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.item(class_='validate') }}
+                </div>
+                <div class="input-field col s4">
+                    {{ form.index.label }}
+                    {% if form.index.errors %}
+                    {% for e in form.index.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.index(class_='validate') }}
+                </div>
+            </div>
+            <input type="submit" class="waves-effect waves-light btn" value="提交">
+        </form>
+    </div>
+</div>
+<div class="row container">
+    {% for row in status %}
+    <div class="col s12 m4 l8">
+        <div class="horizontal">
+            <div class="chip">{{ row.sample }}</div>
+            <div class="chip">{{ row.item }}</div>
+            <div class="chip">{{ row.index }}</div>
+            <div class="chip"><a href="{{ url_for('bp_seq.edit_seq',samlpe=row.sample) }}">修改</a></div>
+            <div class="chip"><a href="{{ url_for('bp_seq.del_seq',samlpe=row.sample) }}">删除</a></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

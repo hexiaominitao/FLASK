@@ -126,7 +126,7 @@ class Fastqc(db.Model):
     GC比例 = db.Column(db.Float())
     N比例 = db.Column(db.Float())
 
-    def __reper__(seif):
+    def __repr__(seif):
         return '<Fastqc {}>'.format(seif.body)
 
 
@@ -152,7 +152,7 @@ class Bamqc(db.Model):
     均一性200 = db.Column(db.Float())
     均一性300 = db.Column(db.Float())
 
-    def __reper__(seif):
+    def __repr__(seif):
         return '<Bamqc {}>'.format(seif.body)
 
 
@@ -229,5 +229,5 @@ class Sample(db.Model):
     病理报告时间 = db.Column(db.Date, index=True)
     报告制作人 = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
-    def __reper__(seif):
+    def __repr__(seif):
         return '<Sample {}>'.format(seif.body)

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}主页{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+{% endblock %}
+{% block content %}
+<div class="row container">
+    <div class="col s12">
+        <div class="card horizontal">
+            <div class="card-stacked">
+                <div class="card-content">Run name</div>
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">样本数</div>
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">上机时间</div>
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">下机时间</div>
+            </div>
+        </div>
+    </div>
+
+    {% for row in status %}
+    <div class="col s12">
+        <div class="card horizontal">
+            <div class="card-stacked">
+                <div class="card-content"><a href="{{ url_for('bp_seq.seq_info',runname=row.name) }}">{{ row.name }}</a>
+                </div>
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">{{ row.count }}</div>
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">{{ row.start_T }}</div>
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">{{ row.end_T }}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="content">
+        <div class="fixed-action-btn vertical">
+            <a class="btn-floating btn-large red" href="{{ url_for('bp_seq.run_info') }}">
+                <i class="large material-icons">add</i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

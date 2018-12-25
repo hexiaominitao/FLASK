@@ -1,0 +1,5 @@
+FLASK WEB 使用指南
+1. git clone https://github.com/hexiaominitao/FLASK.git
+2. 设置数据库，创建一个用户并新建一个数据库，使该用户有该数据库的所有权限
+3. 编辑环境变量（可建立一个文件并使用$ source file 
+4. 使用gevent运行（注意权限）：python3 gserver.py

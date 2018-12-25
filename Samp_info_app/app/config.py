@@ -42,6 +42,9 @@ class DevConfig(Config):
     UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
     UPLOADED_FILEBAM_DEST = 'app/static/up_file'
 
+    CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
+    CELERY_RESULT_BACKEND = "amqp://guest:guest@localhost:5672//"
+
 
 class TestConfig(Config):
     db_file = tempfile.NamedTemporaryFile()

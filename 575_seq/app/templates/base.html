@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}-迈景报告系统</title>
+    <title>{% block title %}{% endblock %}-上机信息</title>
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
@@ -13,20 +13,12 @@
     {% block head %}{% endblock %}
 </head>
 <body>
-<ul id="dropdown1" class="dropdown-content">
-    <li><a href="{{ url_for('sam_bp.fastqc') }}">FASTQ</a></li>
-    <li><a href="{{ url_for('sam_bp.bam_qc') }}">BAM</a></li>
-    <!--<li class="divider"></li>-->
-</ul>
 <nav>
-    <div class="nav-wrapper teal lighten-2">
-        <a href="{{ url_for('sam_bp.index') }}" class="brand-logo center red-text accent-4-text">Mygene</a>
+    <div class="nav-wrapper pink darken-4">
+        <a href="{{ url_for('bp_seq.index') }}" class="brand-logo center red-text accent-4-text">Mygene</a>
         <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <!--<li><a href="{{ url_for('sam_bp.index') }}">主页</a></li>-->
-            <li><a href="{{ url_for('sam_bp.sample_info') }}">样本信息</a></li>
+            <!--<li><a href="#">上机信息</a></li>-->
             <!--<li><a href="#">质控信息</a></li>-->
-            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">质控信息<i class="material-icons right">arrow_drop_down</i></a>
-            </li>
         </ul>
 
         <ul class="right hide-on-med-and-down">
@@ -40,20 +32,6 @@
         </ul>
     </div>
 </nav>
-<div class="content">
-    <div class="fixed-action-btn vertical">
-        <a class="btn-floating btn-large red">
-            <i class="large material-icons">mode_edit</i>
-        </a>
-        <ul>
-            <li><a href="{{ url_for('sam_bp.fastqc') }}" class="btn-floating red"><i
-                    class="material-icons">insert_chart</i></a></li>
-            <li><a href="{{ url_for('sam_bp.bam_qc') }}" class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-            <li><a href="{{ url_for('sam_bp.upload_sam') }}" class="btn-floating green"><i class="material-icons">publish</i></a>
-            </li>
-            <li><a href="{{ url_for('sam_bp.sample_info') }}" class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-        </ul>
-    </div>
     {% block content %}{% endblock %}
 </div>
 
