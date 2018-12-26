@@ -8,7 +8,8 @@ from flask_uploads import configure_uploads, patch_request_class
 from .config import DevConfig
 from .models import db, User, Post, Tag, Comment, Role, Fastqc, Bamqc, Sample
 from .sam_app.admin import CustomView, CustomModeView, CustomFileAdmin
-from .extensions import bcrypt, login_manager, principal, admin, cache, file_sample_info, file_fastq_qc, file_bam_qc
+from .extensions import bcrypt, login_manager, principal, admin, cache, file_sample_info, file_fastq_qc, file_bam_qc, \
+    mail,celery
 
 
 def create_app(config_name):
@@ -19,6 +20,9 @@ def create_app(config_name):
     login_manager.init_app(app)
     principal.init_app(app)
     admin.init_app(app)
+    mail.init_app(app)
+    celery.init_app(app)
+
     # cache.init_app(app)
 
     # 文件上传

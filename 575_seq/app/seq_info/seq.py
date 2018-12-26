@@ -51,6 +51,28 @@ def run_info():
     return render_template('runinfo.html', form=form)
 
 
+@bp_seq.route('/runinfo/edit/<runname>', methods=['POST', 'GET'])
+@login_required
+@default_permission.require(http_exception=403)
+@seq_permission.require(http_exception=403)
+def edit_run(runname):
+    form = RunForm()
+
+    status = RunInfo.query.filter(RunInfo.name == runname).first()
+
+    if form.validate_on_submit():
+        RunInfo.query.filter(RunInfo.name == runname).update({
+            'name': form.runname.data,
+            'count': form.count.data,
+            'start_T': form.start.data,
+            'end_T': form.end.data
+        })
+        db.session.commit()
+        return redirect(url_for('.index'))
+
+    return render_template('edit-run.html', form=form, status=status)
+
+
 @bp_seq.route('/runinfo/<runname>', methods=['POST', 'GET'])
 @login_required
 @default_permission.require(http_exception=403)

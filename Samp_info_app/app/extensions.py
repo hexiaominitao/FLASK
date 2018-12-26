@@ -8,13 +8,16 @@ from flask_principal import Principal, Permission, RoleNeed
 from flask_admin import Admin
 from flask_cache import Cache
 from flask_uploads import UploadSet, DOCUMENTS, DATA
-from celery import Celery
+from flask_celery import Celery
+from flask_mail import Mail ,Message
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 principal = Principal()
 admin = Admin()
 cache = Cache()
+celery = Celery()
+mail = Mail()
 
 file_sample_info = UploadSet('filesam', DOCUMENTS) #文件上传
 file_fastq_qc = UploadSet('filefastq', DATA)
@@ -36,24 +39,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-# def make_celery(app):
-#     celery = Celery(
-#         app.import_name, broker=app.config['CELERY_BROKER_URL'],
-#         backend=app.config['CELERY_BACKEND']
-#     )
-#     celery.conf.updata(app.config)
-#     TaskBase = celery.Task
-#
-#     class ContexTask(TaskBase):
-#         abstract = True
-#
-#         def __call__(self, *args, **kwargs):
-#             with app.app_context():
-#                 return TaskBase.__call__(self, *args, **kwargs)
-#
-#     celery.Task = ContexTask
-#
-#     return celery
+
 
 
 
@@ -81,3 +67,5 @@ def file_to_df(file):
     df['Runname'] = runname
 
     return df, index_qc
+
+

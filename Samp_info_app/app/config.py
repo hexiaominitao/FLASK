@@ -25,6 +25,17 @@ class ProdConfig(Config):
     UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
     UPLOADED_FILEBAM_DEST = 'app/static/up_file'
 
+    # celery 配置
+    CELERY_BROKER_URL = 'amqp://guest@localhost//'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+    # 邮件服务  腾讯企业邮箱
+    MAIL_SERVER = 'smtp.exmail.qq.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
 
 class DevConfig(Config):
     DEBUG = True
@@ -38,12 +49,20 @@ class DevConfig(Config):
     MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME, PASSWORD, DATABASE)
     SQLALCHEMY_DATABASE_URI = MY_SQL
     CACHE_TYPE = 'null'
+    #文件上传路径
     UPLOADED_FILESAM_DEST = 'app/static/up_file'
     UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
     UPLOADED_FILEBAM_DEST = 'app/static/up_file'
-
-    CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
-    CELERY_RESULT_BACKEND = "amqp://guest:guest@localhost:5672//"
+    #celery 配置
+    CELERY_BROKER_URL = 'amqp://guest@localhost//'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+    # 邮件服务  腾讯企业邮箱
+    MAIL_SERVER = 'smtp.exmail.qq.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 
 class TestConfig(Config):
@@ -53,7 +72,9 @@ class TestConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + db_file.name
     CACHE_TYPE = 'null'
-    MAIL_SERVER = 'localhost'
-    MAIL_PORT = 25
-    MAIL_USERNAME = ''
-    MAIL_PASSWORD = ''
+    MAIL_SERVER = 'smtp.exmail.qq.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')

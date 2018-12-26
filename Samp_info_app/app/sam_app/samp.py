@@ -9,6 +9,7 @@ from ..models import db, Post, Tag, Comment, User, tags, Fastqc, Bamqc, Sample
 from ..forms import CommentFrom, PostForm, SampleUploadForm, FastqUploadForm, BamUploadForm
 from ..extensions import poster_permission, admin_permission, default_permission, file_bam_qc, file_fastq_qc, \
     file_sample_info, excel_rd, file_to_df
+from ..tasks import send_mail
 
 sam_bp = Blueprint('sam_bp', __name__, template_folder=path.join(path.pardir, 'templates', 'samp'), url_prefix="/samp")
 
@@ -28,8 +29,10 @@ sam_bp.add_app_template_filter(float_to_percent,'float_to_percent') #添加jinja
 
 
 
-@sam_bp.route('/')
+@sam_bp.route('/',methods=['GET','POST'])
 def index():
+    # if request.method == 'GET':
+    #     send_mail()
     return render_template('index.html')
 
 
