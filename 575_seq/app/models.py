@@ -91,6 +91,7 @@ class SeqInfo(db.Model):
     sample = db.Column(db.String(255))
     item = db.Column(db.String(255))
     index = db.Column(db.String(255))
+    note = db.Column(db.String(255))
     run_info_id = db.Column(db.Integer(), db.ForeignKey('run_info.id'))
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 

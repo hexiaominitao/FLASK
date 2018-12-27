@@ -4,8 +4,8 @@ from flask import Flask, redirect, url_for
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_login import current_user
 
-from .models import db, User,Role,SeqInfo,RunInfo
-from .ext import bcrypt, admin, principal, login_manager
+from .models import db, User, Role, SeqInfo, RunInfo
+from .ext import bcrypt, admin, principal, login_manager, ckeditor, celery, mail
 from app.seq_info.admin import CustomView, CustomModeView, CustomFileAdmin
 
 
@@ -17,8 +17,12 @@ def create_app(config_name):
     admin.init_app(app)
     principal.init_app(app)
     login_manager.init_app(app)
+    ckeditor.init_app(app)
+    celery.init_app(app)
+    mail.init_app(app)
+
     admin.add_view(CustomView(name='Custom'))
-    models = [User,Role,SeqInfo,RunInfo]
+    models = [User, Role, SeqInfo, RunInfo]
 
     for model in models:
         admin.add_view(

@@ -2,11 +2,17 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_principal import Principal, Permission, RoleNeed
 from flask_admin import Admin
+from flask_ckeditor import CKEditor
+from flask_mail import Mail
+from flask_celery import Celery
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 principal = Principal()
 admin = Admin()
+ckeditor = CKEditor()
+mail = Mail()
+celery = Celery()
 
 
 

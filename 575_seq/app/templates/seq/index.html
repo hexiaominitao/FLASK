@@ -28,6 +28,12 @@
             <div class="card-stacked">
                 <div class="card-content"><a href="{{ url_for('bp_seq.seq_info',runname=row.name) }}">{{ row.name }}</a>
                 </div>
+                <div class="card-content">
+                    <a class="waves-effect waves-light btn"
+                       href="{{ url_for('bp_seq.edit_run',runname=row.name) }}">修改</a>
+                    <a class="waves-effect waves-light btn"
+                       href="{{ url_for('bp_seq.del_run',runname=row.name) }}">删除</a>
+                </div>
             </div>
             <div class="card-stacked">
                 <div class="card-content">{{ row.count }}</div>
@@ -37,9 +43,6 @@
             </div>
             <div class="card-stacked">
                 <div class="card-content">{{ row.end_T }}</div>
-            </div>
-            <div class="card-stacked">
-                <div class="card-content"><a href="{{ url_for('bp_seq.edit_run',runname=row.name) }}">修改</a></div>
             </div>
         </div>
     </div>

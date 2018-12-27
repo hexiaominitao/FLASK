@@ -51,7 +51,7 @@ def run_info():
     return render_template('runinfo.html', form=form)
 
 
-@bp_seq.route('/runinfo/edit/<runname>', methods=['POST', 'GET'])
+@bp_seq.route('/runinfo/edit_run/<runname>', methods=['POST', 'GET'])
 @login_required
 @default_permission.require(http_exception=403)
 @seq_permission.require(http_exception=403)
@@ -73,6 +73,20 @@ def edit_run(runname):
     return render_template('edit-run.html', form=form, status=status)
 
 
+@bp_seq.route('/runinfo/del_run/<runname>', methods=['POST', 'GET'])
+@login_required
+@default_permission.require(http_exception=403)
+@seq_permission.require(http_exception=403)
+def del_run(runname):
+    status = RunInfo.query.filter(RunInfo.name == runname).first()
+    sample = status.seq_info
+    for sam in sample:
+        db.session.delete(sam)
+    db.session.delete(status)
+    db.session.commit()
+    return redirect(url_for('.index'))
+
+
 @bp_seq.route('/runinfo/<runname>', methods=['POST', 'GET'])
 @login_required
 @default_permission.require(http_exception=403)
@@ -92,6 +106,7 @@ def seq_info(runname):
             seq = SeqInfo(sample=form.sample.data)
             seq.item = form.item.data
             seq.index = form.index.data
+            seq.note = form.note.data
 
             seq.user = current_user
             seq.run_info = run
@@ -116,7 +131,8 @@ def edit_seq(samlpe):
         SeqInfo.query.filter(SeqInfo.sample == samlpe).update({
             'sample': form.sample.data,
             'item': form.item.data,
-            'index': form.index.data
+            'index': form.index.data,
+            'note' : form.note.data
         })
         db.session.commit()
         return redirect(url_for('.seq_info', runname=runname))
@@ -134,3 +150,5 @@ def del_seq(samlpe):
     db.session.delete(status)
     db.session.commit()
     return redirect(url_for('.seq_info', runname=runname))
+
+

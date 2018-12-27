@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, TextAreaField, PasswordField, BooleanField, TimeField
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField, TimeField,SelectField
 from wtforms.validators import DataRequired, Length, EqualTo
 from .models import User
 
@@ -44,6 +44,7 @@ class SeqForm(FlaskForm):
     sample = StringField('样本编号', [DataRequired(), Length(max=255)])
     item = StringField('检测项目', [DataRequired(), Length(max=255)])
     index = StringField('Index', [DataRequired(), Length(max=255)])
+    note = StringField('备注')
 
 
 

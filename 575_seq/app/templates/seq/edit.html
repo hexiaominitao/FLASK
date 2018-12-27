@@ -37,6 +37,15 @@
                     {% endif %}
                     {{ form.index(class_='validate',value=status.index) }}
                 </div>
+                <div class="input-field col s4">
+                    {{ form.note.label }}
+                    {% if form.note.errors %}
+                    {% for e in form.note.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.note(class_='validate',value=status.note) }}
+                </div>
             </div>
             <input type="submit" class="waves-effect waves-light btn" value="修改">
         </form>
