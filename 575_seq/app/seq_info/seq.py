@@ -3,8 +3,8 @@ from sqlalchemy import func, or_
 from flask import render_template, Blueprint, redirect, url_for, abort, request, current_app, flash
 from flask_login import login_required, current_user
 
-from ..models import db, SeqInfo, RunInfo
-from ..forms import SeqForm, RunForm
+from ..models import db, SeqInfo, RunInfo, SeqIndex
+from ..forms import SeqForm, RunForm, AllSeqForm, IndexForm
 from ..ext import default_permission, seq_permission
 
 bp_seq = Blueprint(
@@ -40,7 +40,7 @@ def run_info():
             pass
         else:
             run = RunInfo(name=form.runname.data)
-            run.count = form.count.data
+            run.paltform = form.paltform.data
             run.start_T = form.start.data
             run.end_T = form.end.data
 
@@ -63,7 +63,7 @@ def edit_run(runname):
     if form.validate_on_submit():
         RunInfo.query.filter(RunInfo.name == runname).update({
             'name': form.runname.data,
-            'count': form.count.data,
+            'paltform': form.paltform.data,
             'start_T': form.start.data,
             'end_T': form.end.data
         })
@@ -93,11 +93,23 @@ def del_run(runname):
 @seq_permission.require(http_exception=403)
 def seq_info(runname):
     form = SeqForm()
+    all_form = AllSeqForm()
     run = RunInfo.query.filter(RunInfo.name == runname).first()
-
     df = {
         'status': SeqInfo.query.filter(SeqInfo.run_info_id == run.id).all()
     }
+    paltform = run.paltform
+
+    index_dic = SeqIndex.query.all()
+    index_d = {}
+    for index_i in index_dic:
+        index_d[index_i.name] = index_i.index
+
+    def split_index(index_data):
+        tem_index = index_data.split('+')
+        if len(tem_index) == 1:
+            return index_d.get('{}_{}'.format(paltform, tem_index[0])), ''
+        return index_d.get('{}_{}'.format(paltform, tem_index[0])), index_d.get('{}_{}'.format(paltform, tem_index[-1]))
 
     if form.validate_on_submit():
         if SeqInfo.query.filter(SeqInfo.sample == form.sample.data).first():
@@ -105,7 +117,8 @@ def seq_info(runname):
         else:
             seq = SeqInfo(sample=form.sample.data)
             seq.item = form.item.data
-            seq.index = form.index.data
+            index_data = form.index.data
+            seq.index, seq.index_p5 = split_index(index_data)
             seq.note = form.note.data
 
             seq.user = current_user
@@ -114,8 +127,28 @@ def seq_info(runname):
             db.session.add(seq)
             db.session.commit()
         return redirect(url_for('.seq_info', runname=runname))
+    if all_form.validate_on_submit():
+        a = all_form.seqinfo.data
+        b = a.split('\n')
+        for c in b:
+            d = c.split('\t')
+            if SeqInfo.query.filter(SeqInfo.sample == d[0]).first():
+                pass
+            else:
+                seq = SeqInfo(sample=d[0])
+                seq.item = d[1]
+                index_data = d[2]
+                seq.index, seq.index_p5 = split_index(index_data)
+                seq.note = d[3]
 
-    return render_template('seqinfo.html', form=form, **df)
+                seq.user = current_user
+                seq.run_info = run
+
+                db.session.add(seq)
+        db.session.commit()
+        return redirect(url_for('.seq_info', runname=runname))
+
+    return render_template('seqinfo.html', form=form, all_form=all_form, run=run, **df)
 
 
 @bp_seq.route('/runinfo/edit/<samlpe>', methods=['POST', 'GET'])
@@ -132,7 +165,8 @@ def edit_seq(samlpe):
             'sample': form.sample.data,
             'item': form.item.data,
             'index': form.index.data,
-            'note' : form.note.data
+            'index_p5': form.index_p5.data,
+            'note': form.note.data
         })
         db.session.commit()
         return redirect(url_for('.seq_info', runname=runname))
@@ -152,3 +186,23 @@ def del_seq(samlpe):
     return redirect(url_for('.seq_info', runname=runname))
 
 
+@bp_seq.route('/runinfo/up_index', methods=['POST', 'GET'])
+@login_required
+@default_permission.require(http_exception=403)
+@seq_permission.require(http_exception=403)
+def up_index():
+    form = IndexForm()
+    if form.validate_on_submit():
+        a = form.indexinfo.data
+        b = a.split('\n')
+        for c in b:
+            d = c.split('\t')
+            if SeqIndex.query.filter(SeqIndex.name == d[0]).first():
+                pass
+            else:
+                seq_index = SeqIndex(name=d[0])
+                seq_index.index = d[1]
+                db.session.add(seq_index)
+        db.session.commit()
+        return redirect(url_for('.index'))
+    return render_template('up_index.html', form=form)

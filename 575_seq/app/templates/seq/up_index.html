@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}详情{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+{% block content %}
+<div class="row container">
+    <div class="col s12">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="input-field col s4">
+                    {{ form.indexinfo.label }}
+                    {% if form.indexinfo.errors %}
+                    {% for e in form.indexinfo.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.indexinfo(class_='materialize-textarea') }}
+                </div>
+            </div>
+            <input type="submit" class="waves-effect waves-light btn" value="提交">
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -19,14 +19,14 @@
                     {{ form.runname(class_='validate',value=status.name) }}
                 </div>
                 <div class="input-field col s4">
-                    {{ form.count.label }}
-                    {% if form.count.errors %}
-                    {% for e in form.count.errors %}
+                    {{ form.paltform.label }}
+                    {% if form.paltform.errors %}
+                    {% for e in form.paltform.errors %}
                     <p data-error="wrong" data-success="right">{{ e }}</p>
                     {% endfor %}
                     {% endif %}
-                    {{ form.count(class_='validate',value=
-                    status.count) }}
+                    {{ form.paltform(class_='validate',value=
+                    status.paltform) }}
                 </div>
                 <div class="input-field col s4">
                     {{ form.start.label }}

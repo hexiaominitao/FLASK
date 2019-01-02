@@ -77,6 +77,7 @@ class RunInfo(db.Model):
     count = db.Column(db.Integer())
     start_T = db.Column(db.DateTime())
     end_T = db.Column(db.DateTime())
+    paltform = db.Column(db.String(255))
     seq_info = db.relationship('SeqInfo', backref='run_info', lazy='dynamic')
 
     def __repr__(seif):
@@ -91,6 +92,7 @@ class SeqInfo(db.Model):
     sample = db.Column(db.String(255))
     item = db.Column(db.String(255))
     index = db.Column(db.String(255))
+    index_p5 = db.Column(db.String(255))
     note = db.Column(db.String(255))
     run_info_id = db.Column(db.Integer(), db.ForeignKey('run_info.id'))
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
@@ -102,4 +104,7 @@ class SeqInfo(db.Model):
         return "<SeqInfo '{}'>".format(self.sample)
 
 
-
+class SeqIndex(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(255))
+    index = db.Column(db.String(255))

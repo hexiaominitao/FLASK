@@ -4,6 +4,60 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 {% block content %}
+<div class="table-responsive container">
+    <table class="responsive-table highlight striped">
+        <caption style="text-align:left"><h5>{{ run.name }}&nbsp&nbsp时间：{{ run.start_T }}——{{ run.end_T }}</h5></caption>
+        <tr>
+            <!--<th>Run name</th>-->
+            <th>样本编号</th>
+            <th>检测项目</th>
+            <th>Index</th>              <!--下拉栏 加载不同的 。。。。-->
+            <th>Index_p5</th>
+            <th>备注</th>
+            <th>修改</th>
+            <th>删除</th>
+        </tr>
+
+        {% for row in status %}
+        <tr>
+            <!--<td>{{ row.run_info.name }}</td>-->
+            <td>{{ row.sample }}</td>
+            <td>{{ row.item }}</td>
+            <td>{{ row.index }}</td>
+            <td>{{ row.index_p5 }}</td>
+            <td>{{ row.note }}</td>
+            <td>
+                <div class="chip"><a href="{{ url_for('bp_seq.edit_seq',samlpe=row.sample) }}">修改</a></div>
+            </td>
+            <td>
+                <div class="chip"><a href="{{ url_for('bp_seq.del_seq',samlpe=row.sample) }}">删除</a></div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+<div class="row container">
+    <div class="col s12">
+        <form method="post">
+            {{ all_form.hidden_tag() }}
+            <div class="row">
+                <div class="input-field col s4">
+                    {{ all_form.seqinfo.label }}
+                    {% if all_form.seqinfo.errors %}
+                    {% for e in all_form.seqinfo.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ all_form.seqinfo(class_='materialize-textarea') }}
+                </div>
+            </div>
+            <input type="submit" class="waves-effect waves-light btn" value="提交">
+        </form>
+    </div>
+</div>
+
 <div class="row container">
     <div class="col s12">
         <form method="post">
@@ -51,39 +105,4 @@
     </div>
 </div>
 
-<div class="table-responsive container">
-    <table class="responsive-table highlight striped">
-        <caption style="text-align:left"><h5>样本信息</h5></caption>
-        <tr>
-            <th>Run name</th>
-            <th>样本编号</th>
-            <th>检测项目</th>
-            <th>Index</th>              <!--下拉栏 加载不同的 。。。。-->
-            <th>备注</th>
-            <th>上机时间</th>
-            <th>下机时间</th>
-            <th>修改</th>
-            <th>删除</th>
-        </tr>
-
-        {% for row in status %}
-        <tr>
-            <td>{{ row.run_info.name }}</td>
-            <td>{{ row.sample }}</td>
-            <td>{{ row.item }}</td>
-            <td>{{ row.index }}</td>
-            <td>{{ row.note }}</td>
-            <td>{{ row.run_info.start_T }}</td>
-            <td>{{ row.run_info.end_T }}</td>
-            <td>
-                <div class="chip"><a href="{{ url_for('bp_seq.edit_seq',samlpe=row.sample) }}">修改</a></div>
-            </td>
-            <td>
-                <div class="chip"><a href="{{ url_for('bp_seq.del_seq',samlpe=row.sample) }}">删除</a></div>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-
-</div>
 {% endblock %}

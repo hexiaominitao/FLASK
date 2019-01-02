@@ -3,7 +3,7 @@ from flask_script.commands import ShowUrls, Clean
 from app import create_app
 from flask_migrate import Migrate, MigrateCommand
 
-from app.models import db, User, Role
+from app.models import db, User, Role, SeqInfo, RunInfo, SeqIndex
 
 app = create_app("app.config.DevConfig")
 

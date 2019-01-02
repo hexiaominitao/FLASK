@@ -38,6 +38,15 @@
                     {{ form.index(class_='validate',value=status.index) }}
                 </div>
                 <div class="input-field col s4">
+                    {{ form.index_p5.label }}
+                    {% if form.index_p5.errors %}
+                    {% for e in form.index_p5.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.index_p5(class_='validate',value=status.index_p5) }}
+                </div>
+                <div class="input-field col s4">
                     {{ form.note.label }}
                     {% if form.note.errors %}
                     {% for e in form.note.errors %}

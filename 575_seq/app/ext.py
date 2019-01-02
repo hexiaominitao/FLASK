@@ -30,3 +30,4 @@ default_permission = Permission(RoleNeed('default'))
 def load_user(user_id):
     from .models import User
     return User.query.get(user_id)
+
