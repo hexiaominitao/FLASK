@@ -4,7 +4,7 @@ from flask import render_template, Blueprint, redirect, url_for, abort, request,
 from flask_login import login_required, current_user
 
 from ..models import db, SeqInfo, RunInfo, SeqIndex
-from ..forms import SeqForm, RunForm, AllSeqForm, IndexForm
+from ..forms import SeqForm, RunForm, AllSeqForm, IndexForm,PlatForm
 from ..ext import default_permission, seq_permission
 
 bp_seq = Blueprint(
@@ -206,3 +206,9 @@ def up_index():
         db.session.commit()
         return redirect(url_for('.index'))
     return render_template('up_index.html', form=form)
+
+
+@bp_seq.route('/select/', methods=['POST', 'GET'])
+def select_t():
+    form = PlatForm()
+    return render_template('test.html', form=form)

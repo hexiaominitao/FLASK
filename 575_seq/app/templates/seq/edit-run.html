@@ -19,14 +19,17 @@
                     {{ form.runname(class_='validate',value=status.name) }}
                 </div>
                 <div class="input-field col s4">
-                    {{ form.paltform.label }}
-                    {% if form.paltform.errors %}
-                    {% for e in form.paltform.errors %}
-                    <p data-error="wrong" data-success="right">{{ e }}</p>
-                    {% endfor %}
-                    {% endif %}
-                    {{ form.paltform(class_='validate',value=
-                    status.paltform) }}
+                    <div class="col s3">
+                        {{ form.paltform.label }}
+                        {% if form.paltform.errors %}
+                        {% for e in form.paltform.errors %}
+                        <p data-error="wrong" data-success="right">{{ e }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col s6">{{ form.paltform(class_='mdui-select',value=
+                        status.paltform) }}
+                    </div>
                 </div>
                 <div class="input-field col s4">
                     {{ form.start.label }}
@@ -37,7 +40,7 @@
                     {% endif %}
                     {{ form.start(class_='validate',value=status.start_T) }}
                 </div>
-                  <div class="input-field col s4">
+                <div class="input-field col s4">
                     {{ form.end.label }}
                     {% if form.end.errors %}
                     {% for e in form.end.errors %}

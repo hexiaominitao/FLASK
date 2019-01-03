@@ -6,7 +6,8 @@
 {% block content %}
 <div class="table-responsive container">
     <table class="responsive-table highlight striped">
-        <caption style="text-align:left"><h5>{{ run.name }}&nbsp&nbsp时间：{{ run.start_T }}——{{ run.end_T }}</h5></caption>
+        <caption style="text-align:left"><h5>{{ run.name }}&nbsp&nbsp时间：{{ run.start_T }}——{{ run.end_T }}</h5>
+        </caption>
         <tr>
             <!--<th>Run name</th>-->
             <th>样本编号</th>
@@ -72,14 +73,17 @@
                     {% endif %}
                     {{ form.sample(class_='validate') }}
                 </div>
-                <div class="input-field col s4">
-                    {{ form.item.label }}
-                    {% if form.item.errors %}
-                    {% for e in form.item.errors %}
-                    <p data-error="wrong" data-success="right">{{ e }}</p>
-                    {% endfor %}
-                    {% endif %}
-                    {{ form.item(class_='validate') }}
+                 <div class="input-field col s4">
+                    <div class="col s3">
+                        {{ form.item.label }}
+                        {% if form.item.errors %}
+                        {% for e in form.item.errors %}
+                        <p data-error="wrong" data-success="right">{{ e }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col s6">{{ form.item(class_='mdui-select') }}
+                    </div>
                 </div>
                 <div class="input-field col s4">
                     {{ form.index.label }}

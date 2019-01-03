@@ -31,12 +31,14 @@
                 <div class="card-content">
                     <a class="waves-effect waves-light btn"
                        href="{{ url_for('bp_seq.edit_run',runname=row.name) }}">修改</a>
-                    <a class="waves-effect waves-light btn"
-                       href="{{ url_for('bp_seq.del_run',runname=row.name) }}">删除</a>
                 </div>
             </div>
             <div class="card-stacked">
                 <div class="card-content">{{ row.paltform }}</div>
+                <div class="card-content">
+                    <a class="waves-effect waves-light btn"
+                       href="{{ url_for('bp_seq.del_run',runname=row.name) }}">删除</a>
+                </div>
             </div>
             <div class="card-stacked">
                 <div class="card-content">{{ row.start_T }}</div>

@@ -19,14 +19,17 @@
                     {{ form.sample(class_='validate',value=status.sample) }}
                 </div>
                 <div class="input-field col s4">
-                    {{ form.item.label }}
-                    {% if form.item.errors %}
-                    {% for e in form.item.errors %}
-                    <p data-error="wrong" data-success="right">{{ e }}</p>
-                    {% endfor %}
-                    {% endif %}
-                    {{ form.item(class_='validate',value=
-                    status.item) }}
+                    <div class="col s3">
+                        {{ form.item.label }}
+                        {% if form.item.errors %}
+                        {% for e in form.item.errors %}
+                        <p data-error="wrong" data-success="right">{{ e }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col s6">{{ form.item(class_='mdui-select',value=
+                        status.item) }}
+                    </div>
                 </div>
                 <div class="input-field col s4">
                     {{ form.index.label }}

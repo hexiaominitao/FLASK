@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, TextAreaField, PasswordField, BooleanField, TimeField, SelectField
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField, TimeField, SelectField,RadioField
 from wtforms.validators import DataRequired, Length, EqualTo
 from .models import User
 
@@ -42,7 +42,7 @@ class RegisterForm(FlaskForm):
 
 class SeqForm(FlaskForm):
     sample = StringField('样本编号', [DataRequired(), Length(max=255)])
-    item = StringField('检测项目', [DataRequired(), Length(max=255)])
+    item = SelectField('检测项目', choices=[('575', '575'), ('1024', '1024')],default='575')
     index = StringField('Index', [DataRequired(), Length(max=255)])
     index_p5 = StringField('Index_p5', [DataRequired(), Length(max=255)])
     note = StringField('备注')
@@ -50,7 +50,7 @@ class SeqForm(FlaskForm):
 
 class RunForm(FlaskForm):
     runname = StringField('Run name', [DataRequired(), Length(max=255)])
-    paltform = StringField('检测平台', [DataRequired(), Length(max=255)])
+    paltform = SelectField('检测平台', choices=[('mini', 'Miniseq'), ('next', 'Nextseq')],default='mini')
     start = StringField('上机时间', [DataRequired(), Length(max=255)])
     end = StringField('下机时间', [DataRequired(), Length(max=255)])
 
@@ -61,3 +61,8 @@ class AllSeqForm(FlaskForm):
 
 class IndexForm(FlaskForm):
     indexinfo = TextAreaField('index信息', [DataRequired(), Length(max=2550)])
+
+
+class PlatForm(FlaskForm):
+    plat = SelectField('平台', choices=[('mini', 'Miniseq'), ('next', 'Nextseq')])
+    # plat = RadioField('method', choices=[(1,'GET'),(2,'POST')])

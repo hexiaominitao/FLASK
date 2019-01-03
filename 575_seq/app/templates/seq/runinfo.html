@@ -9,7 +9,7 @@
         <form method="post">
             {{ form.hidden_tag() }}
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s4">
                     {{ form.runname.label }}
                     {% if form.runname.errors %}
                     {% for e in form.runname.errors %}
@@ -18,16 +18,18 @@
                     {% endif %}
                     {{ form.runname(class_='validate') }}
                 </div>
-                <div class="input-field col s6">
-                    {{ form.paltform.label }}
-                    {% if form.paltform.errors %}
-                    {% for e in form.paltform.errors %}
-                    <p data-error="wrong" data-success="right">{{ e }}</p>
-                    {% endfor %}
-                    {% endif %}
-                    {{ form.paltform(class_='input-field') }}
+                <div class="input-field col s4">
+                    <div class="col s3">
+                        {{ form.paltform.label }}
+                        {% if form.paltform.errors %}
+                        {% for e in form.paltform.errors %}
+                        <p data-error="wrong" data-success="right">{{ e }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col s6">{{ form.paltform(class_='mdui-select') }}</div>
                 </div>
-                <div class="input-field col s6">
+                <div class="input-field col s4">
                     {{ form.start.label }}
                     {% if form.start.errors %}
                     {% for e in form.start.errors %}
@@ -36,7 +38,7 @@
                     {% endif %}
                     {{ form.start(class_='datepicker',placeholder='2018-12-24 12:00:00') }}
                 </div>
-                <div class="input-field col s6">
+                <div class="input-field col s4">
                     {{ form.end.label }}
                     {% if form.end.errors %}
                     {% for e in form.end.errors %}
