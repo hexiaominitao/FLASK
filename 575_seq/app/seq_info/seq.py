@@ -129,7 +129,7 @@ def seq_info(runname):
         return redirect(url_for('.seq_info', runname=runname))
     if all_form.validate_on_submit():
         a = all_form.seqinfo.data
-        b = a.strip().split('\n')
+        b = a.strip('\n').split('\n')
         for c in b:
             d = c.split('\t')
             if SeqInfo.query.filter(SeqInfo.sample == d[0]).first():
@@ -194,7 +194,7 @@ def up_index():
     form = IndexForm()
     if form.validate_on_submit():
         a = form.indexinfo.data
-        b = a.strip().split('\n')
+        b = a.strip('\n').split('\n')
         for c in b:
             d = c.split('\t')
             if SeqIndex.query.filter(SeqIndex.name == d[0]).first():
