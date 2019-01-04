@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 {% endblock %}
 {% block content %}
-<div class="row container">
+<div class="row container ">
     <div class="col s12">
         <div class="card horizontal">
             <div class="card-stacked">
@@ -24,7 +24,7 @@
 
     {% for row in status %}
     <div class="col s12">
-        <div class="card horizontal">
+        <div class="card horizontal hoverable">
             <div class="card-stacked">
                 <div class="card-content"><a href="{{ url_for('bp_seq.seq_info',runname=row.name) }}">{{ row.name }}</a>
                 </div>

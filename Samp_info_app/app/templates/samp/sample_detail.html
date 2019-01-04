@@ -1,114 +1,129 @@
 {% extends "base.html" %}
 {% block title %}{{ sample_id }}-详情{% endblock %}
 {% block content %}
+
 <div class="table-responsive">
     {% if status %}
-    <table class="responsive-table highlight striped">
-        <caption style="text-align:left"><h5>{{ sample_id }}详细信息</h5></caption>
-        {% for row in status %}
+    <h4>{{ sample_id }}</h4>
+    {% for row in status %}
+    <table class="responsive-table highlight grey lighten-4">
+        <caption style="text-align:left"><h5>受检者信息</h5></caption>
         <tr>
-            <td><b>申请单号:</b><a href="#">{{ row.申请单号 }}</a></td>
-            <td>迈景编号:{{ row.迈景编号 }}</td>
-            <td>检测项目:{{ row.检测项目 }}</td>
-            <td>临床诊断:{{ row.临床诊断 }}</td>
-            <td>病理诊断:{{ row.病理诊断 }}</td>
+            <td class="hoverable">患者姓名:<span class="blue-text text-darken-2">{{ row.患者姓名 }}</span></td>
+            <td class="hoverable">病人性别:<span class="blue-text text-darken-2">{{ row.病人性别 }}</span></td>
+            <td class="hoverable">病人年龄:<span class="blue-text text-darken-2">{{ row.病人年龄 }}</span></td>
+            <td class="hoverable">民族:<span class="blue-text text-darken-2">{{ row.民族 }}</span></td>
+            <td class="hoverable">籍贯:<span class="blue-text text-darken-2">{{ row.籍贯 }}</span></td>
         </tr>
         <tr>
-            <td>样本类型:{{ row.样本类型 }}</td>
-            <td>肿瘤细胞含量:{{ row.肿瘤细胞含量 }}</td>
+            <td class="hoverable">病人联系方式:<span class="blue-text text-darken-2">{{ row.病人联系方式 }}</span></td>
+            <td class="hoverable">病人身份证号码:<span class="blue-text text-darken-2">{{ row.病人身份证号码 }}</span></td>
+            <td class="hoverable">病人地址:<span class="blue-text text-darken-2">{{ row.病人地址 }}</span></td>
+        </tr>
+
+    </table>
+    <table class="responsive-table highlight grey lighten-4">
+        <caption style="text-align:left"><h5>病理信息</h5></caption>
+        <tr>
+            <td class="hoverable">病理审核:<span class="blue-text text-darken-2">{{ row.病理审核 }}</span></td>
+            <td class="hoverable">标本内细胞总量:<span class="blue-text text-darken-2">{{ row.标本内细胞总量 }}</span></td>
+            <td class="hoverable">肿瘤细胞含量:<span class="blue-text text-darken-2">{{ row.肿瘤细胞含量 }}</span></td>
+            <td class="hoverable">特殊说明:<span class="blue-text text-darken-2">{{ row.特殊说明 }}</span></td>
         </tr>
         <tr>
-            <td>序号:{{ row.序号 }}</td>
-            <td>迈景编号:{{ row.迈景编号 }}</td>
-            <td>PI姓名:{{ row.PI姓名 }}</td>
-            <td>销售代表:{{ row.销售代表 }}</td>
-            <td>申请单号:{{ row.申请单号 }}</td>
+            <td class="hoverable">临床诊断:<span class="blue-text text-darken-2">{{ row.临床诊断 }}</span></td>
+            <td class="hoverable">病理诊断:<span class="blue-text text-darken-2">{{ row.病理诊断 }}</span></td>
+            <td class="hoverable">诊断日期:<span class="blue-text text-darken-2">{{ row.诊断日期 }}</span></td>
+            <td class="hoverable">病理样本收到日期:<span class="blue-text text-darken-2">{{ row.病理样本收到日期 }}</span></td>
+
+        </tr>
+    </table>
+    <table class="responsive-table highlight grey lighten-4">
+        <caption style="text-align:left"><h5>样本信息</h5></caption>
+        <tr>
+            <td class="hoverable">迈景编号:<span class="blue-text text-darken-2">{{ row.迈景编号 }}</span></td>
+            <td class="hoverable">申请单号:<span class="blue-text text-darken-2">{{ row.申请单号 }}</span></td>
+            <td class="hoverable">检测项目:<span class="blue-text text-darken-2">{{ row.检测项目 }}</span></td>
         </tr>
         <tr>
-            <td>患者姓名:{{ row.患者姓名 }}</td>
-            <td>病人性别:{{ row.病人性别 }}</td>
-            <td>病人年龄:{{ row.病人年龄 }}</td>
-            <td>民族:{{ row.民族 }}</td>
-            <td>籍贯:{{ row.籍贯 }}</td>
+            <td class="hoverable">样本类型:<span class="blue-text text-darken-2">{{ row.样本类型 }}</span></td>
+            <td class="hoverable">项目类型:<span class="blue-text text-darken-2">{{ row.项目类型 }}</span></td>
+            <td class="hoverable">样本来源:<span class="blue-text text-darken-2">{{ row.样本来源 }}</span></td>
         </tr>
         <tr>
-            <td>检测项目:{{ row.检测项目 }}</td>
-            <td>病人联系方式:{{ row.病人联系方式 }}</td>
-            <td>病人身份证号码:{{ row.病人身份证号码 }}</td>
-            <td>病人地址:{{ row.病人地址 }}</td>
-            <td>门诊/住院号:{{ row.门诊住院号 }}</td>
+            <td class="hoverable">采样方式:<span class="blue-text text-darken-2">{{ row.采样方式 }}</span></td>
+            <td class="hoverable">数量:<span class="blue-text text-darken-2">{{ row.数量 }}</span></td>
+            <td class="hoverable">组织大小:<span class="blue-text text-darken-2">{{ row.组织大小 }}</span></td>
+            <td class="hoverable">运输方式:<span class="blue-text text-darken-2">{{ row.运输方式 }}</span></td>
+            <td class="hoverable">状态是否正常:<span class="blue-text text-darken-2">{{ row.状态是否正常 }}</span></td>
         </tr>
         <tr>
-            <td>医生姓名:{{ row.医生姓名 }}</td>
-            <td>医院名称:{{ row.医院名称 }}</td>
-            <td>科室:{{ row.科室 }}</td>
-            <td>病理号:{{ row.病理号 }}</td>
-            <td>临床诊断:{{ row.临床诊断 }}</td>
+            <td class="hoverable">医生姓名:<span class="blue-text text-darken-2">{{ row.医生姓名 }}</span></td>
+            <td class="hoverable">医院名称:<span class="blue-text text-darken-2">{{ row.医院名称 }}</span></td>
+            <td class="hoverable">科室:<span class="blue-text text-darken-2">{{ row.科室 }}</span></td>
+            <td class="hoverable">病理号:<span class="blue-text text-darken-2">{{ row.病理号 }}</span></td>
+            <td class="hoverable">门诊/住院号:<span class="blue-text text-darken-2">{{ row.门诊住院号 }}</span></td>
+        </tr>
+    </table>
+    <table class="responsive-table highlight grey lighten-4">
+        <caption style="text-align:left"><h5>治疗情况</h5></caption>
+        <tr>
+            <td class="hoverable">有无家族遗传疾病:<span class="blue-text text-darken-2">{{ row.有无家族遗传疾病 }}</span></td>
+            <td class="hoverable">有无吸烟史:<span class="blue-text text-darken-2">{{ row.有无吸烟史 }}</span></td>
+            <td class="hoverable">有无其他基因疾病:<span class="blue-text text-darken-2">{{ row.有无其他基因疾病 }}</span></td>
         </tr>
         <tr>
-            <td>诊断日期:{{ row.诊断日期 }}</td>
-            <td>病理诊断:{{ row.病理诊断 }}</td>
-            <td>诊断日期:{{ row.诊断日期 }}</td>
-            <td>病理样本收到日期:{{ row.病理样本收到日期 }}</td>
-            <td>组织大小:{{ row.组织大小 }}</td>
+            <td class="hoverable">是否靶向药治疗:<span class="blue-text text-darken-2">{{ row.是否靶向药治疗 }}</span></td>
+            <td class="hoverable">是否接受化疗:<span class="blue-text text-darken-2">{{ row.是否接受化疗 }}</span></td>
+            <td class="hoverable">是否放疗:<span class="blue-text text-darken-2">{{ row.是否放疗 }}</span></td>
         </tr>
         <tr>
-            <td>病理审核:{{ row.病理审核 }}</td>
-            <td>标本内细胞总量:{{ row.标本内细胞总量 }}</td>
-            <td>肿瘤细胞含量:{{ row.肿瘤细胞含量 }}</td>
-            <td>特殊说明:{{ row.特殊说明 }}</td>
+            <td class="hoverable">靶向药治疗开始时间:<span class="blue-text text-darken-2">{{ row.靶向药治疗开始时间 }}</span></td>
+            <td class="hoverable">化疗开始时间:<span class="blue-text text-darken-2">{{ row.化疗开始时间 }}</span></td>
+            <td class="hoverable">放疗起始时间:<span class="blue-text text-darken-2">{{ row.放疗起始时间 }}</span></td>
+
+
         </tr>
         <tr>
-            <td>是否接受化疗:{{ row.是否接受化疗 }}</td>
-            <td>化疗开始时间:{{ row.化疗开始时间 }}</td>
-            <td>化疗结束时间:{{ row.化疗结束时间 }}</td>
-            <td>化疗治疗效果:{{ row.化疗治疗效果 }}</td>
+            <td class="hoverable">靶向药治疗结束时间:<span class="blue-text text-darken-2">{{ row.靶向药治疗结束时间 }}</span></td>
+            <td class="hoverable">化疗结束时间:<span class="blue-text text-darken-2">{{ row.化疗结束时间 }}</span></td>
+            <td class="hoverable">放疗结束时间:<span class="blue-text text-darken-2">{{ row.放疗结束时间 }}</span></td>
+
         </tr>
         <tr>
-            <td>是否靶向药治疗:{{ row.是否靶向药治疗 }}</td>
-            <td>靶向药治疗开始时间:{{ row.靶向药治疗开始时间 }}</td>
-            <td>靶向药治疗结束时间:{{ row.靶向药治疗结束时间 }}</td>
-            <td>靶向药治疗治疗效果:{{ row.靶向药治疗治疗效果 }}</td>
+
+            <td class="hoverable">靶向药治疗治疗效果:<span class="blue-text text-darken-2">{{ row.靶向药治疗治疗效果 }}</span></td>
+            <td class="hoverable">化疗治疗效果:<span class="blue-text text-darken-2">{{ row.化疗治疗效果 }}</span></td>
+            <td class="hoverable">放疗治疗效果:<span class="blue-text text-darken-2">{{ row.放疗治疗效果 }}</span></td>
+
+
+        </tr>
+    </table>
+    <table class="responsive-table highlight grey lighten-4">
+        <caption style="text-align:left"><h5>其他信息</h5></caption>
+
+        <tr>
+            <td class="hoverable">送检人:<span class="blue-text text-darken-2">{{ row.送检人 }}</span></td>
+            <td class="hoverable">送检日期:<span class="blue-text text-darken-2">{{ row.送检日期 }}</span></td>
+            <td class="hoverable">检测日期:<span class="blue-text text-darken-2">{{ row.检测日期 }}</span></td>
         </tr>
         <tr>
-            <td>是否放疗:{{ row.是否放疗 }}</td>
-            <td>放疗起始时间:{{ row.放疗起始时间 }}</td>
-            <td>放疗结束时间:{{ row.放疗结束时间 }}</td>
-            <td>放疗治疗效果:{{ row.放疗治疗效果 }}</td>
+            <td class="hoverable">收样人:<span class="blue-text text-darken-2">{{ row.收样人 }}</span></td>
+            <td class="hoverable">收样日期:<span class="blue-text text-darken-2">{{ row.收样日期 }}</span></td>
+            <td class="hoverable">报告发出时间:<span class="blue-text text-darken-2">{{ row.报告发出时间 }}</span></td>
         </tr>
         <tr>
-            <td>有无家族遗传疾病:{{ row.有无家族遗传疾病 }}</td>
-            <td>有无其他基因疾病:{{ row.有无其他基因疾病 }}</td>
-            <td>有无吸烟史:{{ row.有无吸烟史 }}</td>
-            <td>项目类型:{{ row.项目类型 }}</td>
-            <td>样本来源:{{ row.样本来源 }}</td>
+
+            <td class="hoverable">报告收件人:<span class="blue-text text-darken-2">{{ row.报告收件人 }}</span></td>
+            <td class="hoverable">联系电话:<span class="blue-text text-darken-2">{{ row.联系电话 }}</span></td>
+            <td class="hoverable">联系地址:<span class="blue-text text-darken-2">{{ row.联系地址 }}</span></td>
+            <td class="hoverable">备注:<span class="blue-text text-darken-2">{{ row.备注 }}</span></td>
         </tr>
         <tr>
-            <td>采样方式:{{ row.采样方式 }}</td>
-            <td>样本类型:{{ row.样本类型 }}</td>
-            <td>数量:{{ row.数量 }}</td>
-            <td>运输方式:{{ row.运输方式 }}</td>
-            <td>状态是否正常:{{ row.状态是否正常 }}</td>
-        </tr>
-        <tr>
-            <td>送检人:{{ row.送检人 }}</td>
-            <td>送检日期:{{ row.送检日期 }}</td>
-            <td>收样人:{{ row.收样人 }}</td>
-            <td>收样日期:{{ row.收样日期 }}</td>
-            <td>检测日期:{{ row.检测日期 }}</td>
-        </tr>
-        <tr>
-            <td>报告发出时间:{{ row.报告发出时间 }}</td>
-            <td>报告收件人:{{ row.报告收件人 }}</td>
-            <td>联系电话:{{ row.联系电话 }}</td>
-            <td>联系地址:{{ row.联系地址 }}</td>
-            <td>备注:{{ row.备注 }}</td>
-        </tr>
-        <tr>
-            <td>申请单病理报告扫描件命名:{{ row.申请单病理报告扫描件命名 }}</td>
-            <td>不出报告原因:{{ row.不出报告原因 }}</td>
-            <td>录入:{{ row.录入 }}</td>
-            <td>审核:{{ row.审核 }}</td>
+            <td class="hoverable">不出报告原因:<span class="blue-text text-darken-2">{{ row.不出报告原因 }}</span></td>
+            <td class="hoverable">录入:<span class="blue-text text-darken-2">{{ row.录入 }}</span></td>
+            <td class="hoverable">审核:<span class="blue-text text-darken-2">{{ row.审核 }}</span></td>
+            <td class="hoverable">销售代表:<span class="blue-text text-darken-2">{{ row.销售代表 }}</span></td>
         </tr>
         {% endfor %}
         {% endif %}

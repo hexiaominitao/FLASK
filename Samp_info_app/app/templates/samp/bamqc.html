@@ -17,13 +17,13 @@
             <th>在靶率</th>
             <th>平均深度</th>
             <th>平均深度(去重)</th>
-            <th>均一性>0% AD</th>
-            <th>均一性>10% AD</th>
+            <!--<th>均一性>0% AD</th>-->
+            <!--<th>均一性>10% AD</th>-->
             <th>均一性>20% AD</th>
             <th>均一性>50% AD</th>
             <th>均一性>100% AD</th>
-            <th>均一性>200% AD</th>
-            <th>均一性>300% AD</th>
+            <!--<th>均一性>200% AD</th>-->
+            <!--<th>均一性>300% AD</th>-->
         </tr>
         {% if status %}
         {% for row in status %}
@@ -39,13 +39,13 @@
             <td>{{ row.在靶率 | float_to_percent  }}</td>
             <td>{{ row.平均深度 }}</td>
             <td>{{ row.平均深度_去重 }}</td>
-            <td>{{ row.均一性0 | float_to_percent  }}</td>
-            <td>{{ row.均一性10 | float_to_percent  }}</td>
+            <!--<td>{{ row.均一性0 | float_to_percent  }}</td>-->
+            <!--<td>{{ row.均一性10 | float_to_percent  }}</td>-->
             <td>{{ row.均一性20 | float_to_percent  }}</td>
             <td>{{ row.均一性50 | float_to_percent  }}</td>
             <td>{{ row.均一性100 | float_to_percent  }}</td>
-            <td>{{ row.均一性200 | float_to_percent  }}</td>
-            <td>{{ row.均一性300 | float_to_percent  }}</td>
+            <!--<td>{{ row.均一性200 | float_to_percent  }}</td>-->
+            <!--<td>{{ row.均一性300 | float_to_percent  }}</td>-->
         </tr>
         {% endfor %}
         {% endif %}
