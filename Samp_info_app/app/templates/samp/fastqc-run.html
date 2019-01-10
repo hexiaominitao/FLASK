@@ -13,7 +13,7 @@
         </tr>
         {% if status %}
         {% for row in status %}
-        <tr>
+        <tr  class="hoverable">
             <td><a href="{{ url_for('sam_bp.fastq_qc',run_name=row) }}">{{ row }}</a></td>
             <!--<td>{{ row.Reads数 }}</td>-->
             <td></td>

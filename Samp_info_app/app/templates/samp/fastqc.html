@@ -4,7 +4,7 @@
 <div class="table-responsive">
 
     <table class="responsive-table highlight striped">
-        <caption style="text-align:left"><h5>Run-{{ run_name }}-<a href="{{ url_for('sam_bp.fastqc') }}">Fastq质控信息</a></h5>
+        <caption style="text-align:left"><h5>Run-{{ run_name }}-<a href="{{ url_for('sam_bp.fastqc') }}"  class="hoverable">Fastq质控信息</a></h5>
         </caption>
         <tr>
             <th>样本编号</th>
@@ -19,7 +19,7 @@
         </tr>
         {% if status %}
         {% for row in status %}
-        <tr>
+        <tr class="hoverable">
             <td>{{ row.样本编号 }}</td>
             <td>{{ row.Reads数 }}</td>
             <td>{{ row.Reads占比 | float_to_percent }}</td>

@@ -7,7 +7,7 @@ db = SQLAlchemy()
 
 tags = db.Table(
     'post_tags', db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
-                db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
 )
 
 roles = db.Table(
@@ -24,7 +24,7 @@ class User(db.Model):
     passwd = db.Column(db.String(255))
     posts = db.relationship('Post', backref='user', lazy='dynamic')
     roles = db.relationship('Role', secondary=roles, backref=db.backref('users', lazy='dynamic'))
-    report = db.relationship('Sample', backref='user', lazy='dynamic')
+    # report = db.relationship('Sample', backref='user', lazy='dynamic')
 
     def __init__(self, username):
         self.username = username
@@ -127,7 +127,7 @@ class Fastqc(db.Model):
     N比例 = db.Column(db.Float())
 
     def __repr__(seif):
-        return '<Fastqc {}>'.format(seif.body)
+        return '<Fastqc {}>'.format(seif.迈景编号)
 
 
 class Bamqc(db.Model):
@@ -153,7 +153,7 @@ class Bamqc(db.Model):
     均一性300 = db.Column(db.Float())
 
     def __repr__(seif):
-        return '<Bamqc {}>'.format(seif.body)
+        return '<Bamqc {}>'.format(seif.迈景编号)
 
 
 class Sample(db.Model):
@@ -227,7 +227,21 @@ class Sample(db.Model):
     录入 = db.Column(db.String(50), nullable=True)
     审核 = db.Column(db.String(50), nullable=True)
     病理报告时间 = db.Column(db.Date, index=True)
-    报告制作人 = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    # 报告制作人 = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    report = db.relationship('Report', backref='report', lazy='dynamic')
 
     def __repr__(seif):
-        return '<Sample {}>'.format(seif.body)
+        return '<Sample {}>'.format(seif.迈景编号)
+
+
+class Report(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    sam = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    mutation = db.Column(db.String(4096), nullable=True)
+
+    sample = db.Column(db.Integer(), db.ForeignKey('sample.id'))
+    rna_qc = db.Column(db.String(50), nullable=True)
+    # dna_qc = db.Column(db.String(50), nullable=True)
+    # qc = db.Column(db.String(4096), nullable=True)
+

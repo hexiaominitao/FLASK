@@ -1,7 +1,7 @@
 import os
 from app import create_app
 from celery import Celery
-from app.tasks import send_mail
+from app.tasks import send_mail,whatch_dir
 
 
 def make_celery(app):

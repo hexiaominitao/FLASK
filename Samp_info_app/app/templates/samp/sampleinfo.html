@@ -24,8 +24,8 @@
 
         {% for row in status %}
         <tr>
-            <td><a href="#">{{ row.申请单号 }}</a></td>
-            <td><a href="{{ url_for('sam_bp.sample_detail',sample_id= row.迈景编号) }}">{{ row.迈景编号 }}</a></td>
+            <td class="hoverable"><a href="{{ url_for('sam_bp.report_info',report_id= row.申请单号) }}">{{ row.申请单号 }}</a></td>
+            <td class="hoverable"><a href="{{ url_for('sam_bp.sample_detail',sample_id= row.迈景编号) }}">{{ row.迈景编号 }}</a></td>
             <td><span>{{ row.检测项目 }}
             </span></td>
             <td>{{ row.临床诊断 }}</td>

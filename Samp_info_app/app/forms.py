@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed  # 文件上传模块
-from wtforms import StringField, TextAreaField, PasswordField, BooleanField
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField, RadioField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
-from app.models import User, Post, Tag, Comment
+from app.models import User, Post, Tag, Comment, Sample
 
 from .extensions import file_bam_qc, file_fastq_qc, file_sample_info
 
@@ -63,3 +63,13 @@ class FastqUploadForm(FlaskForm):
 
 class BamUploadForm(FlaskForm):
     file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_bam_qc)])
+
+
+class ItemFrom(FlaskForm):
+    name = StringField('报告编号', [DataRequired(), Length(max=25)])
+    item = RadioField('检测项目', coerce=str)
+
+    def __init__(self, report_id, *args, **kwargs):
+        super(ItemFrom, self).__init__(*args, **kwargs)
+        self.item.choices = [(cho, cho) for cho in
+                             ((Sample.query.filter(Sample.申请单号 == report_id).first()).检测项目).split('、')]

@@ -41,13 +41,13 @@ def make_shell_contex():
 #     # default_role.description = 'default'
 #     # db.session.add(default_role)
 #
-#     admin = User(username='admin')
-#     admin.set_password("hm714012636")
-#     admin.roles.append(admin_role)
-#     admin.roles.append(default_role)
-#     db.session.add(admin)
-#
-#     db.session.commit()
+    # admin = User(username='admin')
+    # admin.set_password("hm714012636")
+    # admin.roles.append(admin_role)
+    # admin.roles.append(default_role)
+    # db.session.add(admin)
+    #
+    # db.session.commit()
 
 
 if __name__ == '__main__':

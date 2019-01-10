@@ -48,6 +48,7 @@ class DevConfig(Config):
     DATABASE = os.environ.get('SQL_DATABASE')
     MY_SQL = 'mysql+pymysql://{}:{}@127.0.0.1:3306/{}?charset=utf8'.format(USERNAME, PASSWORD, DATABASE)
     SQLALCHEMY_DATABASE_URI = MY_SQL
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     CACHE_TYPE = 'null'
     #文件上传路径
     UPLOADED_FILESAM_DEST = 'app/static/up_file'

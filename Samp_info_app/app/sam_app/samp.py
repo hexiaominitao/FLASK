@@ -5,11 +5,11 @@ from flask import render_template, Blueprint, redirect, url_for, abort, request,
 from flask_login import login_required, current_user
 from flask_principal import Permission, UserNeed
 
-from ..models import db, Post, Tag, Comment, User, tags, Fastqc, Bamqc, Sample
-from ..forms import CommentFrom, PostForm, SampleUploadForm, FastqUploadForm, BamUploadForm
+from ..models import db, Post, Tag, Comment, User, tags, Fastqc, Bamqc, Sample, Report
+from ..forms import CommentFrom, PostForm, SampleUploadForm, FastqUploadForm, BamUploadForm, ItemFrom
 from ..extensions import poster_permission, admin_permission, default_permission, file_bam_qc, file_fastq_qc, \
     file_sample_info, excel_rd, file_to_df
-from ..tasks import send_mail
+from ..tasks import send_mail, whatch_dir
 
 sam_bp = Blueprint('sam_bp', __name__, template_folder=path.join(path.pardir, 'templates', 'samp'), url_prefix="/samp")
 
@@ -23,14 +23,16 @@ def sidebar_data():
 
 
 def float_to_percent(float_value):
-    per = '{}%'.format((str(round(float_value,4) * 100))[:5])
+    per = '{}%'.format((str(round(float_value, 4) * 100))[:5])
     return per
-sam_bp.add_app_template_filter(float_to_percent,'float_to_percent') #添加jinja2过滤器
 
 
+sam_bp.add_app_template_filter(float_to_percent, 'float_to_percent')  # 添加jinja2过滤器
 
-@sam_bp.route('/',methods=['GET','POST'])
+
+@sam_bp.route('/', methods=['GET', 'POST'])
 def index():
+    whatch_dir.delay()
     # if request.method == 'GET':
     #     send_mail()
     return render_template('index.html')
@@ -154,7 +156,7 @@ def upload_sam():
                                            联系地址=sample_info('联系地址'), 备注=sample_info('备注'),
                                            申请单病理报告扫描件命名=sample_info('申请单、病理报告扫描件命名'),
                                            不出报告原因=sample_info('不出报告原因'), 录入=sample_info('录入'),
-                                           审核=sample_info('审核'), 报告制作人=current_user.id)
+                                           审核=sample_info('审核'))
                         if Sample.query.filter(Sample.迈景编号 == sample_id).first():
                             pass
                         else:
@@ -289,3 +291,33 @@ def bam_qc():
         'status': Bamqc.query.all()
     }
     return render_template('bamqc.html', **df)
+
+
+@sam_bp.route('/<report_id>/', methods=['GET', 'POST'])
+def report_info(report_id):
+    status = Sample.query.filter(Sample.申请单号 == report_id).first()
+
+    form = ItemFrom(report_id)
+    if form.validate_on_submit():
+        report_name = report_id + '_' + form.item.data
+        if Report.query.filter(Report.name == report_name).first():
+            Report.query.filter(Report.sample == report_name).update({
+                'name': report_name,
+                'sample': status.id
+            })
+            db.session.commit()
+        else:
+            rep = Report(name=report_name, sam=form.name.data)
+            rep.sample = status.id
+            db.session.add(rep)
+            db.session.commit()
+        return redirect(url_for('.mutation', report_id=report_id))
+
+    return render_template('report_info.html', report_id=report_id, status=status, form=form)
+
+
+@sam_bp.route('/<report_id>/mutation/', methods=['GET', 'POST'])
+def mutation(report_id):
+    status = Report.query.filter(Report.sam == report_id).all()
+
+    return render_template('report_mutation.html', report_id=report_id, status=status)
