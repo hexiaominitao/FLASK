@@ -6,10 +6,10 @@ from flask_login import current_user
 from flask_uploads import configure_uploads, patch_request_class
 
 from .config import DevConfig
-from .models import db, User, Post, Tag, Comment, Role, Fastqc, Bamqc, Sample, Report
+from .models import db, User, Post, Tag, Comment, Role, Fastqc, Bamqc, Sample, Report, Mutation
 from .sam_app.admin import CustomView, CustomModeView, CustomFileAdmin
 from .extensions import bcrypt, login_manager, principal, admin, cache, file_sample_info, file_fastq_qc, file_bam_qc, \
-    mail, celery
+    mail, celery, file_zip
 
 
 def create_app(config_name):
@@ -29,10 +29,11 @@ def create_app(config_name):
     configure_uploads(app, file_sample_info)  # 样本信息表
     configure_uploads(app, file_fastq_qc)  # fast_qc
     configure_uploads(app, file_bam_qc)  # bam_qc
+    configure_uploads(app, file_zip)
     patch_request_class(app)
 
     admin.add_view(CustomView(name='Custom'))
-    models = [User, Post, Tag, Comment, Role, Fastqc, Bamqc, Sample, Report]
+    models = [User, Post, Tag, Comment, Role, Fastqc, Bamqc, Sample, Report, Mutation]
 
     for model in models:
         admin.add_view(

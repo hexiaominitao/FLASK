@@ -1,14 +1,14 @@
 import datetime, os, xlrd
 from os import path
-from sqlalchemy import func, or_
-from flask import render_template, Blueprint, redirect, url_for, abort, request, current_app, flash
+from sqlalchemy import func, or_, and_
+from flask import render_template, Blueprint, redirect, url_for, abort, request, current_app, flash, send_from_directory
 from flask_login import login_required, current_user
 from flask_principal import Permission, UserNeed
 
-from ..models import db, Post, Tag, Comment, User, tags, Fastqc, Bamqc, Sample, Report
-from ..forms import CommentFrom, PostForm, SampleUploadForm, FastqUploadForm, BamUploadForm, ItemFrom
+from ..models import db, Post, Tag, Comment, User, tags, Fastqc, Bamqc, Sample, Report, Mutation
+from ..forms import CommentFrom, PostForm, SampleUploadForm, FastqUploadForm, BamUploadForm, ItemFrom, ZipUploadForm
 from ..extensions import poster_permission, admin_permission, default_permission, file_bam_qc, file_fastq_qc, \
-    file_sample_info, excel_rd, file_to_df
+    file_sample_info, file_zip, excel_rd, file_to_df, unzip_file, ir10087, archive_file
 from ..tasks import send_mail, whatch_dir
 
 sam_bp = Blueprint('sam_bp', __name__, template_folder=path.join(path.pardir, 'templates', 'samp'), url_prefix="/samp")
@@ -301,13 +301,14 @@ def report_info(report_id):
     if form.validate_on_submit():
         report_name = report_id + '_' + form.item.data
         if Report.query.filter(Report.name == report_name).first():
-            Report.query.filter(Report.sample == report_name).update({
+            Report.query.filter(Report.name == report_name).update({
                 'name': report_name,
+                'sam_id': form.sample_id.data,
                 'sample': status.id
             })
             db.session.commit()
         else:
-            rep = Report(name=report_name, sam=form.name.data)
+            rep = Report(name=report_name, sam=form.name.data, sam_id=form.sample_id.data)
             rep.sample = status.id
             db.session.add(rep)
             db.session.commit()
@@ -319,5 +320,56 @@ def report_info(report_id):
 @sam_bp.route('/<report_id>/mutation/', methods=['GET', 'POST'])
 def mutation(report_id):
     status = Report.query.filter(Report.sam == report_id).all()
+    form = ZipUploadForm()
+    if form.validate_on_submit():
+        report_name = form.name.data
+        for filename in request.files.getlist('file'):
+            file_zip.save(filename)
+        return redirect(url_for('.report_mutation', report_id=report_id, report_name=report_name))
+    return render_template('report_mutation.html', report_id=report_id, status=status, form=form)
 
-    return render_template('report_mutation.html', report_id=report_id, status=status)
+
+@sam_bp.route('/<report_id>/mutation/<report_name>', methods=['GET', 'POST'])
+def report_mutation(report_id, report_name):
+    path_file = current_app.config['UPLOADED_FILEZIP_DEST']
+    path_report = current_app.config['REPORT']
+    path_vcf = current_app.config['VCF_FILE']
+    status = Report.query.filter(Report.name == report_name).first()
+    for filename in os.listdir(path_report):
+        if filename.endswith('zip') and status.sam_id in filename:
+            filename = filename
+    for file in os.listdir(path_file):
+        if status.sam_id in file:
+            vcf_file = unzip_file(path_report, path_file, path_vcf, file, report_id)
+            mutation = ir10087(report_id, vcf_file, path_report)
+            title_mu = mutation[0]
+            for row in mutation[1:]:
+                def mutat_ion(item):
+                    return row[title_mu.index(item)]
+
+                mutations = Mutation(基因=mutat_ion('基因'),
+                                     突变类型=mutat_ion('突变类型'),
+                                     突变名称=mutat_ion('突变名称'),
+                                     突变全称=mutat_ion('突变全称'),
+                                     突变频率=mutat_ion('突变频率'),
+                                     覆盖度=mutat_ion('覆盖度'),
+                                     report=status.id
+                                     )
+
+                if Mutation.query.filter(and_(Mutation.基因 == mutat_ion('基因'), Mutation.report == status.id,
+                                              Mutation.突变名称 == mutat_ion('突变名称'))).first():
+                    pass
+                else:
+                    db.session.add(mutations)
+                db.session.commit()
+                archive_file(path_report, report_id)
+                report = Mutation.query.filter(Mutation.report == status.id).all()
+    return render_template('mutation_detail.html', report=report, report_name=report_name, filename=filename)
+
+
+@sam_bp.route('/download/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    dir = os.path.join(os.getcwd(),current_app.config['REPORT'])
+    print(dir)
+    print(filename)
+    return send_from_directory(dir, filename, as_attachment=True)

@@ -24,6 +24,7 @@ class User(db.Model):
     passwd = db.Column(db.String(255))
     posts = db.relationship('Post', backref='user', lazy='dynamic')
     roles = db.relationship('Role', secondary=roles, backref=db.backref('users', lazy='dynamic'))
+
     # report = db.relationship('Sample', backref='user', lazy='dynamic')
 
     def __init__(self, username):
@@ -237,11 +238,22 @@ class Sample(db.Model):
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sam = db.Column(db.String(50), nullable=False)
+    sam_id = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(50), nullable=False)
-    mutation = db.Column(db.String(4096), nullable=True)
+    mutation = db.relationship('Mutation', backref='mutation', lazy='dynamic')
 
     sample = db.Column(db.Integer(), db.ForeignKey('sample.id'))
     rna_qc = db.Column(db.String(50), nullable=True)
     # dna_qc = db.Column(db.String(50), nullable=True)
     # qc = db.Column(db.String(4096), nullable=True)
 
+
+class Mutation(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    基因 = db.Column(db.String(50), nullable=False)
+    突变类型 = db.Column(db.String(50), nullable=False)
+    突变名称 = db.Column(db.String(50), nullable=False)
+    突变全称 = db.Column(db.String(50), nullable=False)
+    突变频率 = db.Column(db.String(50), nullable=False)
+    覆盖度 = db.Column(db.String(50), nullable=False)
+    report = db.Column(db.Integer(), db.ForeignKey('report.id'))

@@ -4,7 +4,7 @@ from wtforms import StringField, TextAreaField, PasswordField, BooleanField, Rad
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from app.models import User, Post, Tag, Comment, Sample
 
-from .extensions import file_bam_qc, file_fastq_qc, file_sample_info
+from .extensions import file_bam_qc, file_fastq_qc, file_sample_info, file_zip
 
 
 class CommentFrom(FlaskForm):
@@ -65,8 +65,14 @@ class BamUploadForm(FlaskForm):
     file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_bam_qc)])
 
 
-class ItemFrom(FlaskForm):
+class ZipUploadForm(FlaskForm):
     name = StringField('报告编号', [DataRequired(), Length(max=25)])
+    file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_zip)])
+
+
+class ItemFrom(FlaskForm):
+    name = StringField('申请单号', [DataRequired(), Length(max=25)])
+    sample_id = StringField('迈景编号', [DataRequired(), Length(max=25)])
     item = RadioField('检测项目', coerce=str)
 
     def __init__(self, report_id, *args, **kwargs):

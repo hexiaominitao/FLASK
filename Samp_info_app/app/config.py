@@ -7,6 +7,12 @@ class Config(object):
     SECRET_KEY = '40f3fea290191b1878144f83f2e3f3ef'
     RECAPTCHA_PUBLIC_KEY = '6LeKgIEUAAAAAFxgWOvLHrWt89IWO3v0qFlzQfaJ'
     RECAPTCHA_PRIVATE_KEY = '6LeKgIEUAAAAAICNkNTkHXEhNttIL3ncm-a7cJFB'
+    UPLOADED_FILESAM_DEST = 'app/static/up_file'
+    UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
+    UPLOADED_FILEBAM_DEST = 'app/static/up_file'
+    UPLOADED_FILEZIP_DEST = 'app/static/zip'
+    VCF_FILE = 'app/static/vcf_file'
+    REPORT = 'app/static/report'
 
 
 class ProdConfig(Config):
@@ -51,9 +57,7 @@ class DevConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CACHE_TYPE = 'null'
     #文件上传路径
-    UPLOADED_FILESAM_DEST = 'app/static/up_file'
-    UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
-    UPLOADED_FILEBAM_DEST = 'app/static/up_file'
+
     #celery 配置
     CELERY_BROKER_URL = 'amqp://guest@localhost//'
     CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
