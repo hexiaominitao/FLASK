@@ -257,3 +257,5 @@ class Mutation(db.Model):
     突变频率 = db.Column(db.String(50), nullable=False)
     覆盖度 = db.Column(db.String(50), nullable=False)
     report = db.Column(db.Integer(), db.ForeignKey('report.id'))
+
+

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}报告-{{ report_id }}{% endblock %}
+{% block content %}
+<div class="row container">
+    <div class="col s12">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="input-field col s4">
+                    {{ form.name.label }}
+                    {% if form.name.errors %}
+                    {% for e in form.name.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.name(class_='validate',value=status.申请单号) }}
+                </div>
+                <div class="input-field col s4">
+                    {{ form.sample_id.label }}
+                    {% if form.sample_id.errors %}
+                    {% for e in form.sample_id.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.sample_id(class_='validate',value=status.迈景编号) }}
+                </div>
+                <div class="input-field col s4">
+                    <div class="col s3">
+                        {{ form.item.label }}
+                        {% if form.item.errors %}
+                        {% for e in form.item.errors %}
+                        <p data-error="wrong" data-success="right">{{ e }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col s6">{{ form.item() }}</div>
+                </div>
+            </div>
+            <input type="submit" class="waves-effect waves-light btn" value="提交">
+        </form>
+    </div>
+</div>
+{% endblock %}

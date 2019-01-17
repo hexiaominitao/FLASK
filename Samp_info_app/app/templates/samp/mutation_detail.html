@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}突变详细信息{% endblock %}
+{% block content %}
+<div class="table-responsive">
+    {% if report %}
+
+    <table class="responsive-table highlight striped">
+        <caption style="text-align:left"><h5>{{ report_name }}--突变信息</h5>
+        </caption>
+        <tr>
+            <td>基因</td>
+            <td>突变类型</td>
+            <td><span>突变名称
+            </span></td>
+            <td>突变全称</td>
+            <td>突变频率</td>
+            <td>覆盖度</td>
+        </tr>
+        {% for row in report %}
+        <tr>
+            <td class="hoverable">{{ row.基因 }}</td>
+            <td class="hoverable">{{ row.突变类型 }}</td>
+            <td><span>{{ row.突变名称 }}
+            </span></td>
+            <td>{{ row.突变全称 }}</td>
+            <td>{{ row.突变频率 }}</td>
+            <td>{{ row.覆盖度 }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+</div>
+<a href="{{ url_for('sam_bp.download',filename=filename) }}">下载</a>
+{% endblock %}

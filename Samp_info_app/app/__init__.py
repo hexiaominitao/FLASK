@@ -65,6 +65,8 @@ def create_app(config_name):
 
     from .sam_app.samp import sam_bp
     from .sam_app.main import main_bp
+    from .sam_app.report import rep_bp
     app.register_blueprint(sam_bp)
     app.register_blueprint(main_bp)
+    app.register_blueprint(rep_bp)
     return app

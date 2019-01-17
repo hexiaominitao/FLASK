@@ -312,64 +312,72 @@ def report_info(report_id):
             rep.sample = status.id
             db.session.add(rep)
             db.session.commit()
-        return redirect(url_for('.mutation', report_id=report_id))
+        report_m = Report.query.filter(Report.name == report_name).first()
+        mutation_r = Mutation.query.filter(Mutation.report == report_m.id).all()
+        if mutation_r:
+            return redirect(url_for('.report_mutation', report_id=report_id, report_name=report_name))
+        else:
+            return redirect(url_for('.mutation', report_id=report_id))
 
     return render_template('report_info.html', report_id=report_id, status=status, form=form)
 
 
 @sam_bp.route('/<report_id>/mutation/', methods=['GET', 'POST'])
 def mutation(report_id):
-    status = Report.query.filter(Report.sam == report_id).all()
     form = ZipUploadForm()
     if form.validate_on_submit():
         report_name = form.name.data
         for filename in request.files.getlist('file'):
             file_zip.save(filename)
+        path_file = current_app.config['UPLOADED_FILEZIP_DEST']
+        path_report = current_app.config['REPORT']
+        path_vcf = current_app.config['VCF_FILE']
+        status = Report.query.filter(Report.name == report_name).first()
+        for file in os.listdir(path_file):
+            if status.sam_id in file:
+                vcf_file = unzip_file(path_report, path_file, path_vcf, file, report_id)
+                mutation = ir10087(report_id, vcf_file, path_report)
+                title_mu = mutation[0]
+                for row in mutation[1:]:
+                    def mutat_ion(item):
+                        return row[title_mu.index(item)]
+
+                    mutations = Mutation(基因=mutat_ion('基因'),
+                                         突变类型=mutat_ion('突变类型'),
+                                         突变名称=mutat_ion('突变名称'),
+                                         突变全称=mutat_ion('突变全称'),
+                                         突变频率=mutat_ion('突变频率'),
+                                         覆盖度=mutat_ion('覆盖度'),
+                                         report=status.id
+                                         )
+
+                    if Mutation.query.filter(and_(Mutation.基因 == mutat_ion('基因'), Mutation.report == status.id,
+                                                  Mutation.突变名称 == mutat_ion('突变名称'))).first():
+                        pass
+                    else:
+                        db.session.add(mutations)
+                    db.session.commit()
+                    archive_file(path_report, report_id)
         return redirect(url_for('.report_mutation', report_id=report_id, report_name=report_name))
+    status = Report.query.filter(Report.sam == report_id).all()
     return render_template('report_mutation.html', report_id=report_id, status=status, form=form)
 
 
 @sam_bp.route('/<report_id>/mutation/<report_name>', methods=['GET', 'POST'])
 def report_mutation(report_id, report_name):
-    path_file = current_app.config['UPLOADED_FILEZIP_DEST']
     path_report = current_app.config['REPORT']
-    path_vcf = current_app.config['VCF_FILE']
     status = Report.query.filter(Report.name == report_name).first()
     for filename in os.listdir(path_report):
-        if filename.endswith('zip') and status.sam_id in filename:
-            filename = filename
-    for file in os.listdir(path_file):
-        if status.sam_id in file:
-            vcf_file = unzip_file(path_report, path_file, path_vcf, file, report_id)
-            mutation = ir10087(report_id, vcf_file, path_report)
-            title_mu = mutation[0]
-            for row in mutation[1:]:
-                def mutat_ion(item):
-                    return row[title_mu.index(item)]
+        if filename.endswith('zip') and status.sam in filename:
+            file = filename
 
-                mutations = Mutation(基因=mutat_ion('基因'),
-                                     突变类型=mutat_ion('突变类型'),
-                                     突变名称=mutat_ion('突变名称'),
-                                     突变全称=mutat_ion('突变全称'),
-                                     突变频率=mutat_ion('突变频率'),
-                                     覆盖度=mutat_ion('覆盖度'),
-                                     report=status.id
-                                     )
-
-                if Mutation.query.filter(and_(Mutation.基因 == mutat_ion('基因'), Mutation.report == status.id,
-                                              Mutation.突变名称 == mutat_ion('突变名称'))).first():
-                    pass
-                else:
-                    db.session.add(mutations)
-                db.session.commit()
-                archive_file(path_report, report_id)
-                report = Mutation.query.filter(Mutation.report == status.id).all()
-    return render_template('mutation_detail.html', report=report, report_name=report_name, filename=filename)
+    report = Mutation.query.filter(Mutation.report == status.id).all()
+    return render_template('mutation_detail.html', report=report, report_name=report_name, filename=file)
 
 
 @sam_bp.route('/download/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    dir = os.path.join(os.getcwd(),current_app.config['REPORT'])
-    print(dir)
-    print(filename)
+    dir = os.path.join(os.getcwd(), current_app.config['REPORT'])
+    # print(dir)
+    # print(filename)
     return send_from_directory(dir, filename, as_attachment=True)

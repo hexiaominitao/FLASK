@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}报告-{{ report_id }}{% endblock %}
+{% block content %}
+{% for row in status %}
+<div class="row container">
+    <div class="col s12">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="input-field col s4">
+                    {{ form.name.label }}
+                    {% if form.name.errors %}
+                    {% for e in form.name.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.name(class_='validate',value=row.name) }}
+                </div>
+                <div class="input-field col s4">
+                    <div class="col s3">
+                        {{ form.file.label }}
+                        {% if form.file.errors %}
+                        {% for e in form.file.errors %}
+                        <p data-error="wrong" data-success="right">{{ e }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="file-field input-field s12">
+                        {{ form.file(multiple="multiple",class="btn") }}
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="waves-effect waves-light btn" value="提交">
+        </form>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

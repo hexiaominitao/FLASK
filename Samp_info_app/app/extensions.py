@@ -108,7 +108,7 @@ def ir10087(report_id, file, path_report):
     out_Fusion = []
     path_wk = os.getcwd()
     path_file = os.path.join(path_wk, path_report, report_id)
-    file_vcf = os.path.join(path_wk,file)
+    file_vcf = os.path.join(path_wk, file)
     os.chdir(path_file)
 
     def write_tsv(WS, TSV):
@@ -135,13 +135,13 @@ def ir10087(report_id, file, path_report):
                 for j in range(1, len(allele_i)):
                     if float(allele_i[j]):
                         fao_1 = allele_i[j]
-                        af_1 = str(float(allele_i[j]) / float(coverage) * 100) + '%'
+                        af_1 = str(round((float(allele_i[j]) / float(coverage) * 100),2)) + '%'
                         fao_2.append(fao_1)
                         af_2.append(af_1)
                         fao = ','.join(fao_2)
                         af = ','.join(af_2)
                     else:
-                        af, fao = str(100 - round(float(allele) / float(coverage), 4) * 100) + '%', int(
+                        af, fao = str(round((100 - float(allele) / float(coverage) * 100), 2)) + '%', int(
                             coverage) - int(
                             allele)
         else:
@@ -183,24 +183,27 @@ def ir10087(report_id, file, path_report):
         out_Mutation.insert(0, title)
         # file_open_w(ir_name + 'Mutation.csv', out_Mutation)
         write_tsv(ws_mutation, out_Mutation)
-        print('检测到了%d个DNA序列变异,详情见 IR过滤 ' % (len(out_Mutation) - 1))
+        # print('检测到了%d个DNA序列变异,详情见 IR过滤 ' % (len(out_Mutation) - 1))
     else:
-        print('未检测到突变,请用IGV手工查看')
+        # print('未检测到突变,请用IGV手工查看')
+        pass
     if out_Fusion:
         out_Fusion.insert(0, title)
         # file_open_w(ir_name + 'Fusion.csv', out_Fusion)
         write_tsv(ws_fusion, out_Fusion)
-        print('融合结果请查看 Fusion ')
+        # print('融合结果请查看 Fusion ')
     else:
-        print('这个文件没有融合信息')
+        pass
+        # print('这个文件没有融合信息')
 
     if out_CNV:
         out_CNV.insert(0, title)
         # file_open_w(ir_name + 'CNV.csv', out_CNV)
         write_tsv(ws_cnv, out_CNV)
-        print("检测到了%d个DNA拷贝数变异，详情见 CNV" % (len(out_CNV) - 1))
+        # print("检测到了%d个DNA拷贝数变异，详情见 CNV" % (len(out_CNV) - 1))
     else:
-        print("未检测到DNA拷贝数变异")
+        pass
+        # print("未检测到DNA拷贝数变异")
 
     out_Report = []
     out_Result = ''
@@ -256,12 +259,12 @@ def ir10087(report_id, file, path_report):
                   report_AF, ir_m[title.index('FAO')]]
         out_Report.append(report)
         out_Result = out_Result + Result
-    print('报告结果>>>>>> %s' % out_Result)
+    # print('报告结果>>>>>> %s' % out_Result)
     if out_Report:
         out_Report.insert(0, title_Report)
         # file_open_w(ir_name + 'REPORT.csv', out_Report)
         write_tsv(ws_report, out_Report)
-        print('结果详见 REPORT（有缺失突变 或插入突变请查看IGV获得 <参考基因型>和<检测基因型> ）')
+        # print('结果详见 REPORT（有缺失突变 或插入突变请查看IGV获得 <参考基因型>和<检测基因型> ）')
         ws_details['A5'] = out_Result
     wb.save(filename=dest_filename)
     os.chdir(path_wk)
