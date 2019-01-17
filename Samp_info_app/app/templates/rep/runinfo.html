@@ -1,0 +1,42 @@
+{% extends "post.html" %}
+{% block title %}主页{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+{% block content %}
+<div class="mdui-table-fluid">
+    <table class="mdui-table mdui-table-selectable">
+        <thead>
+        <tr>
+            <th>RunName</th>
+            <th class="mdui-table-col-numeric"
+                mdui-tooltip="{content: 'The total amount of food energy in the given serving size.'}">测序平台
+            </th>
+            <th class="mdui-table-col-numeric">上机时间</th>
+            <th class="mdui-table-col-numeric">下机时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a href="{{ url_for('rep_bp.seqinfo') }}">S201810013-WWY</a></td>
+            <td>S5</td>
+            <td>2019-01-17 12:00:00</td>
+            <td>2019-01-18 08:00:00</td>
+        </tr>
+        <tr>
+            <td><a href="{{ url_for('rep_bp.seqinfo') }}">S201810013-WWY</a></td>
+            <td>S5</td>
+            <td>2019-01-17 12:00:00</td>
+            <td>2019-01-18 08:00:00</td>
+        </tr>
+        <tr>
+            <td><a href="{{ url_for('rep_bp.seqinfo') }}">S201810013-WWY</a></td>
+            <td>S5</td>
+            <td>2019-01-17 12:00:00</td>
+            <td>2019-01-18 08:00:00</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

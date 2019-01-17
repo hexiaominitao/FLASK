@@ -1,0 +1,55 @@
+{% extends "post.html" %}
+{% block title %}主页{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+{% block content %}
+<div class="mdui-table-fluid">
+    <table class="mdui-table mdui-table-selectable">
+        <thead>
+        <tr>
+            <th>迈景编号</th>
+            <th class="mdui-table-col-numeric">申请单号</th>
+            <th class="mdui-table-col-numeric">检测项目</th>
+            <th class="mdui-table-col-numeric">质控</th>
+            <th class="mdui-table-col-numeric">突变</th>
+            <th class="mdui-table-col-numeric">肿瘤类型</th>
+            <th class="mdui-table-col-numeric">Barcode编号</th>
+            <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <div class="mdui-panel mdui-panel-popout" mdui-panel>
+                    <div class="mdui-panel-item">
+                        <div class="mdui-panel-item-header">MG1803950</div>
+                        <div class="mdui-panel-item-body">
+                            <p>First content</p>
+                            <p>First content</p>
+                            <p>First content</p>
+                            <p>First content</p>
+                            <p>First content</p>
+                            <p>First content</p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td>MG1866130282</td>
+            <td>24</td>
+            <td>男</td>
+            <td>石蜡切片</td>
+            <td>肺癌</td>
+            <td>XP-22/XP-23</td>
+            <td>34%</td>
+        </tr>
+        </tbody>
+    </table>
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+            href="{{ url_for('rep_bp.seqinfo') }}">上一步</a></button>
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+            href="{{ url_for('rep_bp.mufinfo') }}">下一步</a></button>
+</div>
+
+
+{% endblock %}
