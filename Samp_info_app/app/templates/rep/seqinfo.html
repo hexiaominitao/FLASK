@@ -8,55 +8,44 @@
     <table class="mdui-table mdui-table-selectable">
         <thead>
         <tr>
-            <th>迈景编号</th>
-            <th class="mdui-table-col-numeric"
-                mdui-tooltip="{content: 'The total amount of food energy in the given serving size.'}">申请单号
-            </th>
-            <th class="mdui-table-col-numeric">检测项目</th>
-            <th class="mdui-table-col-numeric">性别</th>
-            <th class="mdui-table-col-numeric">标本类型</th>
-            <th class="mdui-table-col-numeric">肿瘤类型</th>
-            <th class="mdui-table-col-numeric"
-                mdui-tooltip="{content: 'The amount of calcium as a percentage of the recommended daily amount.'}">
-                Barcode编号
-            </th>
+            <th mdui-tooltip="{content: '突变筛选结果解释.'}">迈景编号</th>
+            <th class="mdui-table-col-numeric" mdui-tooltip="{content: '查看申请单.'}">申请单号</th>
+            <th class="mdui-table-col-numeric">质控</th>
+            <th class="mdui-table-col-numeric">突变</th>
             <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
+            <th class="mdui-table-col-numeric">状态</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>MG1803950</td>
+            <td><a href="{{ url_for('rep_bp.rep_mut') }}">MG1803950</a></td>
             <td>MG1866130282</td>
-            <td>24</td>
-            <td>男</td>
-            <td>石蜡切片</td>
-            <td>肺癌</td>
-            <td>XP-22/XP-23</td>
+            <td>质控合格</td>
+            <td>12个突变</td>
             <td>34%</td>
+            <td>未制作</td>
         </tr>
         <tr>
             <td>MG1803950</td>
             <td>MG1866130282</td>
-            <td>24</td>
-            <td>男</td>
-            <td>石蜡切片</td>
-            <td>肺癌</td>
-            <td>XP-22/XP-23</td>
+            <td>质控合格</td>
+            <td>12个突变</td>
             <td>34%</td>
+            <td>未制作</td>
         </tr>
         <tr>
             <td>MG1803950</td>
             <td>MG1866130282</td>
-            <td>24</td>
-            <td>男</td>
-            <td>石蜡切片</td>
-            <td>肺癌</td>
-            <td>XP-22/XP-23</td>
+            <td>质控合格</td>
+            <td>12个突变</td>
             <td>34%</td>
+            <td>未制作</td>
         </tr>
         </tbody>
     </table>
-    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="{{ url_for('rep_bp.runinfo') }}">上一步</a></button>
-    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="{{ url_for('rep_bp.muinfo') }}">下一步</a></button>
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+            href="{{ url_for('rep_bp.runinfo') }}">上一步</a></button>
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+            href="{{ url_for('rep_bp.muinfo') }}">下一步</a></button>
 </div>
 {% endblock %}
