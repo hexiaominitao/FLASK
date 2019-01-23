@@ -11,13 +11,13 @@
                 <input class="file-path validate" type="text">
             </div>
         </div>
-    <input type="submit" class="waves-effect waves-light btn" value="上传">
+        <input type="submit" class="waves-effect waves-light btn" value="上传">
     </form>
 </div>
 
 <div class="col s9">
     <h5>上传fastq质控信息</h5>
-       <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
         {{ fastq_form.hidden_tag() }}
         <div class="file-field input-field s12">
             {{ fastq_form.file(multiple="multiple",class="btn") }}
@@ -25,12 +25,12 @@
                 <input class="file-path validate" type="text">
             </div>
         </div>
-    <input type="submit" class="waves-effect waves-light btn" value="上传">
+        <input type="submit" class="waves-effect waves-light btn" value="上传">
     </form>
 </div>
 <div class="col s9">
     <h5>上传bam质控信息</h5>
-       <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
         {{ bam_form.hidden_tag() }}
         <div class="file-field input-field s12">
             {{ bam_form.file(multiple="multiple",class="btn") }}
@@ -38,7 +38,15 @@
                 <input class="file-path validate" type="text">
             </div>
         </div>
-    <input type="submit" class="waves-effect waves-light btn" value="上传">
+        <input type="submit" class="waves-effect waves-light btn" value="上传">
     </form>
+</div>
+<div class="file-upload">
+    {% for message in get_flashed_messages() %}
+    <div class="mdui-chip">
+        <span class="mdui-chip-title">{{ message }}</span>
+        <span class="mdui-chip-delete"><i class="mdui-icon material-icons">cancel</i></span>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

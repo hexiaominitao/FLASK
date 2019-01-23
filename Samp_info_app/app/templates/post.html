@@ -14,55 +14,48 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     {% block head %}{% endblock %}
 </head>
-<body>
-<ul id="dropdown1" class="dropdown-content">
-    <li><a href="{{ url_for('rep_bp.runinfo') }}">上机信息</a></li>
-    <li><a href="{{ url_for('rep_bp.muinfo') }}">突变概览</a></li>
-    <li><a href="{{ url_for('rep_bp.mufinfo') }}">结果初审</a></li>
-        <li><a href="{{ url_for('rep_bp.musinfo') }}">结果二审</a></li>
-        <li><a href="{{ url_for('rep_bp.repinfo') }}">已完成报告</a></li>
 
-    <!--<li class="divider"></li>-->
-</ul>
-<nav>
-    <div class="nav-wrapper teal lighten-2">
-        <a href="{{ url_for('sam_bp.index') }}" class="brand-logo center red-text accent-4-text">迈景基因</a>
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <!--<li><a href="{{ url_for('sam_bp.index') }}">主页</a></li>-->
 
-            <!--<li><a href="#">质控信息</a></li>-->
-            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">报告<i class="material-icons right">arrow_drop_down</i></a>
-            </li>
-            <li><a href="{{ url_for('sam_bp.sample_info') }}">数据统计</a></li>
-        </ul>
-
-        <ul class="right hide-on-med-and-down">
-            {% if current_user.is_authenticated %}
-            <li><a href="{{ url_for('admin.index') }}">{{ current_user.username }}</a></li>
-            <li><a href="{{ url_for('main.logout') }}">注销</a></li>
-            {% else %}
-            <li><a href="{{ url_for('main.login') }}">登录</a></li>
-            <li><a href="{{ url_for('main.register') }}">注册</a></li>
-            {% endif %}
-        </ul>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar  mdui-theme-primary-indigo mdui-theme-accent-pink">
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme">
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+              mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>
+        <a href="#" class="mdui-typo-headline mdui-hidden-xs">MgGene</a>
+        <a href="#" class="mdui-typo-title">{% block page %}{% endblock %}</a>
+        <div class="mdui-toolbar-spacer"></div>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('admin.index') }}">{{ current_user.username }}</a>
+        <a href="{{ url_for('main.logout') }}">注销</a>
+        {% else %}
+        <a href="{{ url_for('main.login') }}">登录</a>
+        <a href="{{ url_for('main.register') }}">注册</a>
+        {% endif %}
     </div>
-</nav>
-<div class="content">
-    <div class="fixed-action-btn vertical">
-        <a class="btn-floating btn-large red">
-            <i class="large material-icons">mode_edit</i>
-        </a>
-        <ul>
-            <li><a href="{{ url_for('sam_bp.fastqc') }}" class="btn-floating red"><i
-                    class="material-icons">insert_chart</i></a></li>
-            <li><a href="{{ url_for('sam_bp.bam_qc') }}" class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-            <li><a href="{{ url_for('sam_bp.upload_sam') }}" class="btn-floating green"><i class="material-icons">publish</i></a>
-            </li>
-            <li><a href="{{ url_for('sam_bp.sample_info') }}" class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-        </ul>
+</header>
+
+<div class="mdui-drawer" id="main-drawer">
+    <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+
+        <div class="mdui-collapse-item mdui-collapse-item-open">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange">layers</i>
+                <div class="mdui-list-item-content">报告</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list">
+                <a href="{{ url_for('rep_bp.runinfo') }}" class="mdui-list-item mdui-ripple ">上机信息</a>
+                <a href="{{ url_for('rep_bp.seqinfo') }}" class="mdui-list-item mdui-ripple ">报告制作</a>
+                <a href="{{ url_for('rep_bp.muinfo') }}" class="mdui-list-item mdui-ripple ">结果初审</a>
+                <a href="{{ url_for('rep_bp.mufinfo') }}" class="mdui-list-item mdui-ripple ">结果二审</a>
+                <a href="{{ url_for('rep_bp.musinfo') }}" class="mdui-list-item mdui-ripple ">报告发送</a>
+                <a href="{{ url_for('rep_bp.repinfo') }}" class="mdui-list-item mdui-ripple ">已完成报告</a>
+            </div>
+        </div>
     </div>
-    {% block content %}{% endblock %}
 </div>
+{% block content %}{% endblock %}
+
 
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

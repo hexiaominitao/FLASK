@@ -3,14 +3,15 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
+{% block page %}结果初审{% endblock %}
 {% block content %}
 <div class="mdui-table-fluid">
     <table class="mdui-table mdui-table-selectable">
         <thead>
         <tr>
-            <th>基因</th>
-            <th class="mdui-table-col-numeric">突变类型</th>
-            <th class="mdui-table-col-numeric">突变名称</th>
+            <th>迈景编号</th>
+            <th class="mdui-table-col-numeric">申请单号</th>
+            <th class="mdui-table-col-numeric">质控</th>
             <th class="mdui-table-col-numeric">突变</th>
             <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
             <th class="mdui-table-col-numeric">状态</th>

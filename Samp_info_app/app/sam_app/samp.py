@@ -32,7 +32,7 @@ sam_bp.add_app_template_filter(float_to_percent, 'float_to_percent')  # 添加ji
 
 @sam_bp.route('/', methods=['GET', 'POST'])
 def index():
-    whatch_dir.delay()
+    # whatch_dir.delay()
     # if request.method == 'GET':
     #     send_mail()
     return render_template('index.html')
