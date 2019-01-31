@@ -163,7 +163,7 @@ def upload_sam():
                             db.session.add(samp_info)
                             db.session.commit()
                             flash('成功上传样本信息登记表')
-                    os.remove(os.path.join(path_zip, file))
+            os.remove(os.path.join(path_zip, file))
 
     if fastq_form.validate_on_submit():
         for filename in request.files.getlist('file'):
@@ -190,7 +190,7 @@ def upload_sam():
                         db.session.add(fastq_info)
                         db.session.commit()
                         flash('成功上传')
-                os.remove(os.path.join(path_zip, file))
+            os.remove(os.path.join(path_zip, file))
 
     if bam_form.validate_on_submit():
         for filename in request.files.getlist('file'):
@@ -233,7 +233,7 @@ def upload_sam():
                             db.session.add(bam_info)
                             db.session.commit()
                             flash('成功上传')
-                    os.remove(os.path.join(path_zip, file))
+            os.remove(os.path.join(path_zip, file))
 
     return render_template('upload.html', sam_form=sam_form, fastq_form=fastq_form, bam_form=bam_form)
 

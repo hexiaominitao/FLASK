@@ -139,7 +139,10 @@ def seq_info(runname):
                 seq.item = d[1]
                 index_data = d[2]
                 seq.index, seq.index_p5 = split_index(index_data)
-                seq.note = d[3]
+                if d[3]:
+                    seq.note = d[3]
+                else:
+                    seq.note = ''
 
                 seq.user = current_user
                 seq.run_info = run

@@ -3,6 +3,7 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
+{% block page %}上机信息{% endblock %}
 {% block content %}
 <div class="mdui-panel" mdui-panel>
     <div class="mdui-table-fluid">
@@ -21,7 +22,7 @@
     </div>
 
     <div class="mdui-panel-item">
-         <div class="mdui-panel-item-header">
+        <div class="mdui-panel-item-header">
             <div class="mdui-panel-item-title mdui-col-xs-6">S201810013-WWY</div>
             <div class="mdui-panel-item-summary mdui-col-xs-2">S5</div>
             <div class="mdui-panel-item-summary mdui-col-xs-2">2019-01-17 12:00:00</div>
@@ -94,15 +95,13 @@
                     </tbody>
                 </table>
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">上一步</a></button>
+                        href="{{ url_for('rep_bp.runinfo') }}">报告制作</a></button>
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
                         href="{{ url_for('rep_bp.runinfo') }}">初审</a></button>
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
                         href="{{ url_for('rep_bp.runinfo') }}">二审</a></button>
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
                         href="{{ url_for('rep_bp.runinfo') }}">发送报告</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.seqinfo') }}">下一步</a></button>
             </div>
         </div>
     </div>
