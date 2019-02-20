@@ -24,7 +24,7 @@ def page_not_found(error):
 @bp_seq.route('/', methods=['POST', 'GET'])
 def index():
     df = {
-        'status': RunInfo.query.all()
+        'status': RunInfo.query.order_by(RunInfo.start_T.desc()).all()
     }
     return render_template('index.html', **df)
 
