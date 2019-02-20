@@ -50,8 +50,13 @@
                     {{ form.end(class_='validate',value=status.end_T) }}
                 </div>
             </div>
-            <input type="submit" class="waves-effect waves-light btn" value="修改">
+            <div class="card-content col s6">
+                <input type="submit" class="waves-effect waves-light btn" value="修改">
+                <a class="waves-effect waves-light btn"
+                   href="{{ url_for('bp_seq.del_run',runname=status.name) }}">删除</a>
+            </div>
         </form>
     </div>
 </div>
+
 {% endblock %}
