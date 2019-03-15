@@ -4,19 +4,24 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 {% block content %}
-<form action="" method=post>
-    <table>
-        <tr>
-            <th></th>
-            <th>ID</th>
-        </tr>
-        {% for page in pages %}
-        <tr>
-            <td><input type=checkbox name=do_delete value="{{ page.id }}"></td>
-            <td>{{ page.id }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <input type=submit value=提交>
-</form>
+<!--<form action="" method=post>-->
+    <!--<table>-->
+        <!--<tr>-->
+            <!--<th></th>-->
+            <!--<th>ID</th>-->
+            <!--<th>Name</th>-->
+
+        <!--</tr>-->
+        <!--{% for page in pages %}-->
+        <!--<tr>-->
+            <!--<td><input type=checkbox name=do_delete value="{{ page.id }}"></td>-->
+            <!--<td>{{ page.id }}</td>-->
+            <!--<td>{{ page.username }}</td>-->
+        <!--</tr>-->
+        <!--{% endfor %}-->
+    <!--</table>-->
+    <!--<input type=submit value=提交>-->
+<!--</form>-->
+
+
 {% endblock %}

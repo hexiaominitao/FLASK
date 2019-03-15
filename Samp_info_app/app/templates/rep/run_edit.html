@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "post.html" %}
+{% block title %}主页{% endblock %}
+{% block head %}
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">-->
+{% endblock %}
+{% block content %}
+<div class="row container">
+    <div class="col s12">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="input-field col s3">
+                    {{ form.run.label }}
+                    {% if form.run.errors %}
+                    {% for e in form.run.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.run(class_='validate') }}
+                </div>
+                <div class="input-field col s3">
+                    <div class="col s3">
+                        {{ form.platform.label }}
+                        {% if form.platform.errors %}
+                        {% for e in form.platform.errors %}
+                        <p data-error="wrong" data-success="right">{{ e }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col s6">{{ form.platform(class_='browser-default') }}</div>
+                </div>
+                <div class="input-field col s3">
+                    {{ form.start.label }}
+                    {% if form.start.errors %}
+                    {% for e in form.start.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.start(class_='datepicker',placeholder='2018-12-24 12:00:00') }}
+                </div>
+                <div class="input-field col s3">
+                    {{ form.end.label }}
+                    {% if form.end.errors %}
+                    {% for e in form.end.errors %}
+                    <p data-error="wrong" data-success="right">{{ e }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {{ form.end(class_='datepicker',placeholder='2018-12-24 12:00:00') }}
+                </div>
+            </div>
+            <!--<input type="date" class="datepicker" name="start">-->
+            <!--<input type="date" class="datepicker" name="end">-->
+            <input type="submit" class="waves-effect waves-light btn" value="提交">
+        </form>
+    </div>
+</div>
+{% endblock %}

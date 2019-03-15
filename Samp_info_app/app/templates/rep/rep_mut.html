@@ -25,7 +25,19 @@
             <td>58</td>
             <td>审核通过</td>
         </tr>
+        <tr>
+            <td>EGFR</td>
+            <td>SNV</td>
+            <td>EGFR p.(L858R) c.2573T>G</td>
+            <td>6.9%</td>
+            <td>58</td>
+            <td>审核未通过</td>
+        </tr>
         </tbody>
     </table>
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+                        href="{{ url_for('rep_bp.runinfo') }}">通过</a></button>
+                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+                        href="{{ url_for('rep_bp.runinfo') }}">不通过</a></button>
 </div>
 {% endblock %}

@@ -12,6 +12,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
     {% block head %}{% endblock %}
 </head>
 
@@ -22,7 +23,7 @@
         <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
               mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>
         <a href="{{ url_for('sam_bp.index') }}" class="mdui-typo-headline mdui-hidden-xs">MyGene</a>
-        <a href="#" class="mdui-typo-title">{% block page %}{% endblock %}</a>
+
         <div class="mdui-toolbar-spacer"></div>
         {% if current_user.is_authenticated %}
         <a href="{{ url_for('admin.index') }}">{{ current_user.username }}</a>
@@ -54,6 +55,15 @@
         </div>
     </div>
 </div>
+
+<div class="mdui-toolbar">
+    <span class="mdui-typo-title">{% block page %}{% endblock %}</span>
+    {% block button %}{% endblock %}
+    <div class="mdui-toolbar-spacer"></div>
+    <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+    <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>-->
+    <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>-->
+</div>
 {% block content %}{% endblock %}
 
 
@@ -62,6 +72,7 @@
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/mdui/0.4.2/js/mdui.min.js"></script>
+
 {% block js %}
 {% endblock %}
 </body>

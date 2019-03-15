@@ -51,3 +51,9 @@
             href="{{ url_for('rep_bp.muinfo') }}">下一步</a></button>
 </div>
 {% endblock %}
+{% block js %}
+<script>
+    var check = document.querySelector('.mdui-table-cell-checkbox')
+    console.log(check)
+</script>
+{% endblock %}

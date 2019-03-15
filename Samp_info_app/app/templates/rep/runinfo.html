@@ -4,6 +4,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 {% block page %}上机信息{% endblock %}
+{% block button %}
+<a href="{{ url_for('rep_bp.upload') }}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">add</i></a>
+<a href="{{ url_for('rep_bp.up_seqinfo') }}" class="mdui-btn mdui-btn-icon"><i
+        class="mdui-icon material-icons">plus_one</i></a>
+{% endblock %}
 {% block content %}
 <div class="mdui-panel" mdui-panel>
     <div class="mdui-table-fluid">
@@ -20,20 +25,26 @@
             </thead>
         </table>
     </div>
-
+    {% for row in runinfos %}
     <div class="mdui-panel-item">
         <div class="mdui-panel-item-header">
-            <div class="mdui-panel-item-title mdui-col-xs-6">S201810013-WWY</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">S5</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">2019-01-17 12:00:00</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">2019-01-18 08:00:00</div>
+            <div class="mdui-panel-item-title mdui-col-xs-6">{{ row.name }}</div>
+            <div class="mdui-panel-item-summary mdui-col-xs-2">{{ row.platform }}</div>
+            <div class="mdui-panel-item-summary mdui-col-xs-2">{{ row.start_T }}</div>
+            <div class="mdui-panel-item-summary mdui-col-xs-2">{{ row.end_T }}</div>
         </div>
         <div class="mdui-panel-item-body">
             <div class="mdui-table-fluid">
-                <table class="mdui-table mdui-table-selectable">
+                <table class="mdui-table mdui-table-hoverable">
                     <thead>
                     <tr>
-                        <th>迈景编号</th>
+                        <th>
+                            <div class="mdui-checkbox">
+                                <input type="checkbox" class="select-all"/>
+                                <i class="mdui-checkbox-icon"></i>
+                                迈景编号
+                            </div>
+                        </th>
                         <th class="mdui-table-col-numeric">申请单号</th>
                         <th class="mdui-table-col-numeric">检测项目</th>
                         <th class="mdui-table-col-numeric">性别</th>
@@ -48,234 +59,47 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% for row_seq in seq_run(row.id) %}
                     <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
+                        <td>
+                            <div class="mdui-checkbox">
+                                <input type="checkbox" class="item"/>
+                                <i class="mdui-checkbox-icon"></i>
+                                {{ row_seq.sample_name }}
+                            </div>
+                        </td>
+                        <td>{{ row_seq.sample_mg }}</td>
+                        <td>{{ row_seq.item }}</td>
+                        <td>{{ row_seq.sample_info.病人性别 }}</td>
+                        <td>{{ row_seq.sample_info.样本类型 }}</td>
+                        <td>{{ row_seq.sample_info.临床诊断 }}</td>
+                        <td>{{ row_seq.barcode }}</td>
+                        <td>{{ row_seq.sample_info.肿瘤细胞含量 }}</td>
                         <td>上机</td>
                     </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>已完成</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>待二审</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>已审核</td>
-                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
                         href="{{ url_for('rep_bp.runinfo') }}">报告制作</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">初审</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">二审</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">发送报告</a></button>
             </div>
         </div>
     </div>
-    <div class="mdui-panel-item">
-        <div class="mdui-panel-item-header">
-            <div class="mdui-panel-item-title mdui-col-xs-6">S201810013-WWY</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">S5</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">2019-01-17 12:00:00</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">2019-01-18 08:00:00</div>
-        </div>
-        <div class="mdui-panel-item-body">
-            <div class="mdui-table-fluid">
-                <table class="mdui-table mdui-table-selectable">
-                    <thead>
-                    <tr>
-                        <th>迈景编号</th>
-                        <th class="mdui-table-col-numeric">申请单号</th>
-                        <th class="mdui-table-col-numeric">检测项目</th>
-                        <th class="mdui-table-col-numeric">性别</th>
-                        <th class="mdui-table-col-numeric">标本类型</th>
-                        <th class="mdui-table-col-numeric" mdui-tooltip="{content: '临床诊断或病理诊断'}">肿瘤类型</th>
-                        <th class="mdui-table-col-numeric"
-                            mdui-tooltip="{content: '接头.'}">
-                            Barcode编号
-                        </th>
-                        <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
-                        <th class="mdui-table-col-numeric">状态</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>上机</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>已完成</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>待二审</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>已审核</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">上一步</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">初审</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">二审</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">发送报告</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.muinfo') }}">下一步</a></button>
-            </div>
-        </div>
-    </div>
-    <div class="mdui-panel-item">
-        <div class="mdui-panel-item-header">
-            <div class="mdui-panel-item-title mdui-col-xs-6">S201810013-WWY</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">S5</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">2019-01-17 12:00:00</div>
-            <div class="mdui-panel-item-summary mdui-col-xs-2">2019-01-18 08:00:00</div>
-        </div>
-        <div class="mdui-panel-item-body">
-            <div class="mdui-table-fluid">
-                <table class="mdui-table mdui-table-selectable">
-                    <thead>
-                    <tr>
-                        <th>迈景编号</th>
-                        <th class="mdui-table-col-numeric">申请单号</th>
-                        <th class="mdui-table-col-numeric">检测项目</th>
-                        <th class="mdui-table-col-numeric">性别</th>
-                        <th class="mdui-table-col-numeric">标本类型</th>
-                        <th class="mdui-table-col-numeric" mdui-tooltip="{content: '临床诊断或病理诊断'}">肿瘤类型</th>
-                        <th class="mdui-table-col-numeric"
-                            mdui-tooltip="{content: '接头.'}">
-                            Barcode编号
-                        </th>
-                        <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
-                        <th class="mdui-table-col-numeric">状态</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>上机</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>已完成</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>待二审</td>
-                    </tr>
-                    <tr>
-                        <td>MG1803950</td>
-                        <td>MG1866130282</td>
-                        <td>24</td>
-                        <td>男</td>
-                        <td>石蜡切片</td>
-                        <td>肺癌</td>
-                        <td>XP-22/XP-23</td>
-                        <td>34%</td>
-                        <td>已审核</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">上一步</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">初审</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">二审</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">发送报告</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.muinfo') }}">下一步</a></button>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
+<script>
+    var all_select = document.querySelector('.select-all');
+    var items = document.querySelectorAll('.item');
+    all_select.onclick = function () {
+        if (all_select.checked) {
+            for (var i = 0; i < items.length; i++) {
+                items[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < items.length; i++) {
+                items[i].checked = false;
+            }
+        }
+    }
+</script>
 {% endblock %}

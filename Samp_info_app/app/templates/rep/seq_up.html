@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "post.html" %}
+{% block title %}主页{% endblock %}
+{% block head %}
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">-->
+{% endblock %}
+{% block content %}
+<div class="col s9">
+    <h5>上机信息</h5>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="file-field input-field s12">
+            {{ form.file(multiple="multiple",class="btn") }}
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
+        <input type="submit" class="waves-effect waves-light btn" value="上传">
+    </form>
+</div>
+{% endblock %}

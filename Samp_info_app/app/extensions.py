@@ -1,3 +1,5 @@
+import datetime, xlrd
+
 import pandas as pd
 from pandas import DataFrame
 import zipfile, shutil, os, csv, re, openpyxl
@@ -24,6 +26,7 @@ file_sample_info = UploadSet('filesam', DOCUMENTS)  # 文件上传
 file_fastq_qc = UploadSet('filefastq', DATA)
 file_bam_qc = UploadSet('filebam', DOCUMENTS)
 file_zip = UploadSet('filezip', ARCHIVES)
+file_seq = UploadSet('fileseq', DOCUMENTS)
 
 login_manager.login_view = "main.login"
 login_manager.session_protection = "strong"
@@ -135,7 +138,7 @@ def ir10087(report_id, file, path_report):
                 for j in range(1, len(allele_i)):
                     if float(allele_i[j]):
                         fao_1 = allele_i[j]
-                        af_1 = str(round((float(allele_i[j]) / float(coverage) * 100),2)) + '%'
+                        af_1 = str(round((float(allele_i[j]) / float(coverage) * 100), 2)) + '%'
                         fao_2.append(fao_1)
                         af_2.append(af_1)
                         fao = ','.join(fao_2)
@@ -279,3 +282,18 @@ def archive_file(path_report, filename):
             for file in arc_file:
                 myzip.write(os.path.join(arc_root, file), file)
     os.chdir(path_wk)
+
+
+def get_seq_info(file):
+    df = pd.read_excel(file, header=1)
+    df1 = df[['文件名(Run)', '迈景编号', '申请单号', '检测内容',
+              'Barcode编号', '上机时间', '结束时间', '备注']].copy()
+    data = xlrd.open_workbook(file)
+    table = data.sheets()[0]
+    return df1.groupby(pd.Grouper(key='文件名(Run)')), table.row_values(0)[0].strip('上机信息表')
+
+
+def time_set(item):
+    date = datetime.datetime.strptime(item, "%Y%m%d %H:%M")
+    time = date.strftime('%Y-%m-%d %H:%M:%S')
+    return time

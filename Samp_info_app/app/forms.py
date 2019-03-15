@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed  # 文件上传模块
-from wtforms import StringField, TextAreaField, PasswordField, BooleanField, RadioField, SelectMultipleField
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField, RadioField, SelectMultipleField,SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, URL
 from app.models import User, Post, Tag, Comment, Sample
 from wtforms.widgets import ListWidget, CheckboxInput
 
-from .extensions import file_bam_qc, file_fastq_qc, file_sample_info, file_zip
+from .extensions import file_bam_qc, file_fastq_qc, file_sample_info, file_zip,file_seq
 
 
 class CommentFrom(FlaskForm):
@@ -65,6 +65,8 @@ class FastqUploadForm(FlaskForm):
 class BamUploadForm(FlaskForm):
     file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_bam_qc)])
 
+class SeqUploadForm(FlaskForm):
+    file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_seq)])
 
 class ZipUploadForm(FlaskForm):
     name = StringField('报告编号', [DataRequired(), Length(max=25)])
@@ -95,3 +97,10 @@ class MultiCheckboxField(SelectMultipleField):
 class FormProject(FlaskForm):
     Code = StringField('Code', [DataRequired(message='Please enter your code')])
     Tasks = MultiCheckboxField(DataRequired(message='Please tick your task'), choices=[('1', '1')])
+
+
+class SeqInfoForm(FlaskForm):
+    run = StringField('RunName',[DataRequired(),Length(max=30)])
+    platform = SelectField('检测平台', choices=[('s5', 'S5'), ('pgm', 'PGM')],default='pgm')
+    start = StringField('上机时间', [DataRequired(), Length(max=255)])
+    end = StringField('下机时间', [DataRequired(), Length(max=255)])

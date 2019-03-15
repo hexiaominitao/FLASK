@@ -24,6 +24,7 @@ class User(db.Model):
     passwd = db.Column(db.String(255))
     posts = db.relationship('Post', backref='user', lazy='dynamic')
     roles = db.relationship('Role', secondary=roles, backref=db.backref('users', lazy='dynamic'))
+    seq_info = db.relationship('SeqInfo', backref='user', lazy='dynamic')
 
     # report = db.relationship('Sample', backref='user', lazy='dynamic')
 
@@ -230,6 +231,7 @@ class Sample(db.Model):
     病理报告时间 = db.Column(db.Date, index=True)
     # 报告制作人 = db.Column(db.Integer(), db.ForeignKey('user.id'))
     report = db.relationship('Report', backref='report', lazy='dynamic')
+    seq_info = db.relationship('SeqInfo',backref='sample_info',lazy='dynamic')
 
     def __repr__(seif):
         return '<Sample {}>'.format(seif.迈景编号)
@@ -259,3 +261,31 @@ class Mutation(db.Model):
     report = db.Column(db.Integer(), db.ForeignKey('report.id'))
 
 
+class RunInfo(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255))
+    start_T = db.Column(db.DateTime())
+    end_T = db.Column(db.DateTime())
+    platform = db.Column(db.String(255))
+    seq_info = db.relationship('SeqInfo', backref='run_info', lazy='dynamic')
+
+    def __repr__(seif):
+        return '<RunInfo {}>'.format(seif.name)
+
+
+class SeqInfo(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    sample_name = db.Column(db.String(255))  # 迈景编号
+    sample_mg = db.Column(db.String(255))  # 申请单号
+    item = db.Column(db.String(255))  # 检测项目
+    barcode = db.Column(db.String(255))  # Barcode编号
+    note = db.Column(db.String(255))  # 备注
+    run_info_id = db.Column(db.Integer(), db.ForeignKey('run_info.id'))
+    sample_id = db.Column(db.Integer(), db.ForeignKey('sample.id'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+
+    # def __init__(self, sample):
+    #     self.sample = sample
+
+    def __repr__(self):
+        return "<SeqInfo '{}'>".format(self.sample)

@@ -7,7 +7,7 @@ from ..extensions import admin_permission
 
 class CustomModeView(ModelView):
     # pass
-    can_create = False
+    # can_create = False
     def is_accessible(self):
         return current_user.is_authenticated and admin_permission
 

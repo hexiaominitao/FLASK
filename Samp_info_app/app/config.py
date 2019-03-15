@@ -11,8 +11,10 @@ class Config(object):
     UPLOADED_FILEFASTQ_DEST = 'app/static/up_file'
     UPLOADED_FILEBAM_DEST = 'app/static/up_file'
     UPLOADED_FILEZIP_DEST = 'app/static/zip'
+    UPLOADED_FILESEQ_DEST = 'app/static/seq'
     VCF_FILE = 'app/static/vcf_file'
     REPORT = 'app/static/report'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class ProdConfig(Config):
