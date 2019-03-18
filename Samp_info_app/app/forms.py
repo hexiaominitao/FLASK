@@ -72,6 +72,9 @@ class ZipUploadForm(FlaskForm):
     name = StringField('报告编号', [DataRequired(), Length(max=25)])
     file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_zip)])
 
+class MuUpForm(FlaskForm):
+    file = FileField('上传文件', validators=[FileRequired(), FileAllowed(file_zip)])
+
 
 class ItemFrom(FlaskForm):
     name = StringField('申请单号', [DataRequired(), Length(max=25)])

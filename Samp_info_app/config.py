@@ -4,6 +4,7 @@ class Config(object):
     # cat /dev/urandom | tr -cd 'a-f0-9' | head -c 32 获取随机字符
     SECRET_KEY = '40f3fea290191b1878144f83f2e3f3ef'
 
+
 class ProdConfig(Config):
     pass
 

@@ -26,6 +26,7 @@
         </table>
     </div>
     {% for row in runinfos %}
+
     <div class="mdui-panel-item">
         <div class="mdui-panel-item-header">
             <div class="mdui-panel-item-title mdui-col-xs-6">{{ row.name }}</div>
@@ -35,71 +36,60 @@
         </div>
         <div class="mdui-panel-item-body">
             <div class="mdui-table-fluid">
-                <table class="mdui-table mdui-table-hoverable">
-                    <thead>
-                    <tr>
-                        <th>
-                            <div class="mdui-checkbox">
-                                <input type="checkbox" class="select-all"/>
-                                <i class="mdui-checkbox-icon"></i>
-                                迈景编号
-                            </div>
-                        </th>
-                        <th class="mdui-table-col-numeric">申请单号</th>
-                        <th class="mdui-table-col-numeric">检测项目</th>
-                        <th class="mdui-table-col-numeric">性别</th>
-                        <th class="mdui-table-col-numeric">标本类型</th>
-                        <th class="mdui-table-col-numeric" mdui-tooltip="{content: '临床诊断或病理诊断'}">肿瘤类型</th>
-                        <th class="mdui-table-col-numeric"
-                            mdui-tooltip="{content: '接头.'}">
-                            Barcode编号
-                        </th>
-                        <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
-                        <th class="mdui-table-col-numeric">状态</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for row_seq in seq_run(row.id) %}
-                    <tr>
-                        <td>
-                            <div class="mdui-checkbox">
-                                <input type="checkbox" class="item"/>
-                                <i class="mdui-checkbox-icon"></i>
-                                {{ row_seq.sample_name }}
-                            </div>
-                        </td>
-                        <td>{{ row_seq.sample_mg }}</td>
-                        <td>{{ row_seq.item }}</td>
-                        <td>{{ row_seq.sample_info.病人性别 }}</td>
-                        <td>{{ row_seq.sample_info.样本类型 }}</td>
-                        <td>{{ row_seq.sample_info.临床诊断 }}</td>
-                        <td>{{ row_seq.barcode }}</td>
-                        <td>{{ row_seq.sample_info.肿瘤细胞含量 }}</td>
-                        <td>上机</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">报告制作</a></button>
+                <form method="post">
+                    <table class="mdui-table mdui-table-hoverable">
+                        <thead>
+                        <tr>
+                            <th>
+                                <!--<label class="mdui-checkbox">-->
+                                    <!--<input type="checkbox" class="select-all"/>-->
+                                    <!--<i class="mdui-checkbox-icon"></i>-->
+                                <!--</label>-->
+                            </th>
+                            <th class="mdui-table-col-numeric">迈景编号</th>
+                            <th class="mdui-table-col-numeric">申请单号</th>
+                            <th class="mdui-table-col-numeric">检测项目</th>
+                            <th class="mdui-table-col-numeric">性别</th>
+                            <th class="mdui-table-col-numeric">标本类型</th>
+                            <th class="mdui-table-col-numeric" mdui-tooltip="{content: '临床诊断或病理诊断'}">肿瘤类型</th>
+                            <th class="mdui-table-col-numeric"
+                                mdui-tooltip="{content: '接头.'}">
+                                Barcode编号
+                            </th>
+                            <th class="mdui-table-col-numeric" mdui-tooltip="{content: '肿瘤细胞占比'}">肿瘤占比</th>
+                            <th class="mdui-table-col-numeric">状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for row_seq in seq_run(row.id) %}
+                        <tr>
+                            <td>
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" class="item" name="check" value={{ row_seq.sample_mg }} />
+                                    <i class="mdui-checkbox-icon"></i>
+                                </label>
+                            </td>
+                            <td>{{ row_seq.sample_name }}</td>
+                            <td>{{ row_seq.sample_mg }}</td>
+                            <td>{{ row_seq.item }}</td>
+                            <td>{{ row_seq.sample_info.病人性别 }}</td>
+                            <td>{{ row_seq.sample_info.样本类型 }}</td>
+                            <td>{{ row_seq.sample_info.临床诊断 }}</td>
+                            <td>{{ row_seq.barcode }}</td>
+                            <td>{{ row_seq.sample_info.肿瘤细胞含量 }}</td>
+                            <td>{{ status_name(row_seq.sample_mg) }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <input type="submit" name="report" value="报告制作">
+                </form>
             </div>
+
         </div>
     </div>
     {% endfor %}
+
 </div>
-<script>
-    var all_select = document.querySelector('.select-all');
-    var items = document.querySelectorAll('.item');
-    all_select.onclick = function () {
-        if (all_select.checked) {
-            for (var i = 0; i < items.length; i++) {
-                items[i].checked = true;
-            }
-        } else {
-            for (var i = 0; i < items.length; i++) {
-                items[i].checked = false;
-            }
-        }
-    }
-</script>
+
 {% endblock %}

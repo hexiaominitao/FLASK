@@ -25,6 +25,7 @@ class User(db.Model):
     posts = db.relationship('Post', backref='user', lazy='dynamic')
     roles = db.relationship('Role', secondary=roles, backref=db.backref('users', lazy='dynamic'))
     seq_info = db.relationship('SeqInfo', backref='user', lazy='dynamic')
+    report = db.relationship('Report',backref='user',lazy='dynamic')
 
     # report = db.relationship('Sample', backref='user', lazy='dynamic')
 
@@ -243,9 +244,10 @@ class Report(db.Model):
     sam_id = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     mutation = db.relationship('Mutation', backref='mutation', lazy='dynamic')
-
+    status = db.Column(db.String(50), nullable=False)
     sample = db.Column(db.Integer(), db.ForeignKey('sample.id'))
-    rna_qc = db.Column(db.String(50), nullable=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    # rna_qc = db.Column(db.String(50), nullable=True)
     # dna_qc = db.Column(db.String(50), nullable=True)
     # qc = db.Column(db.String(4096), nullable=True)
 

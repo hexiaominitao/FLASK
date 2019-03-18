@@ -1,12 +1,22 @@
 import os
 from os import path
 from flask import render_template, Blueprint, redirect, url_for, abort, request, current_app, flash, send_from_directory
+from flask_login import current_user
+from sqlalchemy import func, or_, and_
 
-from ..extensions import get_seq_info, file_seq, time_set
-from ..models import db, User, RunInfo, SeqInfo, Sample
-from ..forms import CheckForm, FormProject, SeqInfoForm, SeqUploadForm
+from ..extensions import get_seq_info, file_seq, time_set, file_zip, unzip_file, ir10087, archive_file
+from ..models import db, User, RunInfo, SeqInfo, Sample, Report, Mutation
+from ..forms import CheckForm, FormProject, SeqInfoForm, SeqUploadForm, MuUpForm
 
 rep_bp = Blueprint('rep_bp', __name__, template_folder=path.join(path.pardir, 'templates', 'rep'), url_prefix="/rep")
+
+
+def status_name(name):
+    status = Report.query.filter(Report.sam_id == name).first()
+    if status:
+        return '{} {}'.format(status.user.username, status.status)
+    else:
+        return '上机'
 
 
 @rep_bp.route('/', methods=['GET', 'POST'])
@@ -32,22 +42,57 @@ def runinfo():
     df = {
         "runinfos": RunInfo.query.order_by(RunInfo.start_T.desc()).all()
     }
+
     # seq1 = SeqInfo.query.filter(SeqInfo.sample_mg == 'MG1916670037').first()
     # print(seq1.sample_info.迈景编号)
     def seq_run(name):
         seq = SeqInfo.query.filter(SeqInfo.run_info_id == name).all()
         return seq
-    return render_template('runinfo.html', **df, seq_run=seq_run)
+
+    if 'report' in request.form:
+        report_mg = request.form.getlist('check')
+        for name in report_mg:
+            if Report.query.filter(Report.sam_id == name).first():
+                pass
+            else:
+                sample = Sample.query.filter(Sample.申请单号 == name).first()
+                item = SeqInfo.query.filter(SeqInfo.sample_mg == name).first()
+                report = Report(sam_id=name)
+                report.report = sample
+                report.sam = sample.迈景编号
+                report.name = '{}_{}基因检测报告'.format(name, item.item)
+                report.status = '制作中'
+                report.user = current_user
+                db.session.add(report)
+                db.session.commit()
+
+    return render_template('runinfo.html', **df, seq_run=seq_run, status_name=status_name)
 
 
-@rep_bp.route('/rep_mut/')
-def rep_mut():
-    return render_template('rep_mut.html')
+@rep_bp.route('/rep_mut/<sample_mg>')
+def rep_mut(sample_mg):
+    df = {
+        'report': Report.query.filter(Report.sam_id==sample_mg).first()
+    }
+    return render_template('rep_mut.html',**df,sample_mg=sample_mg)
 
 
 @rep_bp.route('/seqinfo/')
 def seqinfo():
-    return render_template('seqinfo.html')
+    user = current_user
+    df = {
+        'report': Report.query.filter(and_(Report.status == '制作中', Report.user_id == user.id)).all()
+    }
+
+    def mutation_conut(sam_id):
+        count = 0
+        mutation = Report.query.filter(Report.sam_id == sam_id).first()
+        if mutation:
+            for _ in mutation.mutation:
+                count +=1
+        return count
+
+    return render_template('seqinfo.html', **df, status_name=status_name,mutation_conut=mutation_conut)
 
 
 @rep_bp.route('/muinfo/')
@@ -133,6 +178,40 @@ def up_seqinfo():
     return render_template('seq_up.html', form=form)
 
 
-@rep_bp.route('/upload/mut_info/')
-def up_mutinfo():
-    return 'hello'
+@rep_bp.route('/upload/<sample_mg>/',methods=['GET', 'POST'])
+def up_mutinfo(sample_mg):
+    form = MuUpForm()
+    status = Report.query.filter(Report.sam_id == sample_mg).first()
+    path_file = current_app.config['UPLOADED_FILEZIP_DEST']
+    path_report = current_app.config['REPORT']
+    path_vcf = current_app.config['VCF_FILE']
+    if form.validate_on_submit():
+        for filename in request.files.getlist('file'):
+            file_zip.save(filename)
+        for file in os.listdir(path_file):
+            if status.sam in file:
+                vcf_file = unzip_file(path_report, path_file, path_vcf, file, sample_mg)
+                mutation = ir10087(sample_mg, vcf_file, path_report)
+                title_mu = mutation[0]
+                for row in mutation[1:]:
+                    def mutat_ion(item):
+                        return row[title_mu.index(item)]
+
+                    mutations = Mutation(基因=mutat_ion('基因'),
+                                         突变类型=mutat_ion('突变类型'),
+                                         突变名称=mutat_ion('突变名称'),
+                                         突变全称=mutat_ion('突变全称'),
+                                         突变频率=mutat_ion('突变频率'),
+                                         覆盖度=mutat_ion('覆盖度'),
+                                         mutation=status
+                                         )
+
+                    if Mutation.query.filter(and_(Mutation.基因 == mutat_ion('基因'), Mutation.report == status.id,
+                                                  Mutation.突变名称 == mutat_ion('突变名称'))).first():
+                        pass
+                    else:
+                        db.session.add(mutations)
+                    db.session.commit()
+                    archive_file(path_report, sample_mg)
+        return redirect(url_for('rep_bp.seqinfo'))
+    return render_template('mutation_up.html', form=form, status=status)

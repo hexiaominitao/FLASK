@@ -3,6 +3,7 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
+{% block page %}{{ sample_mg }}-突变详情{% endblock %}
 {% block content %}
 <div class="mdui-table-fluid">
     <table class="mdui-table mdui-table-selectable">
@@ -11,33 +12,29 @@
             <th>基因</th>
             <th class="mdui-table-col-numeric">突变类型</th>
             <th class="mdui-table-col-numeric">突变名称</th>
+            <th class="mdui-table-col-numeric">突变全称</th>
             <th class="mdui-table-col-numeric">突变频率</th>
             <th class="mdui-table-col-numeric">覆盖度</th>
             <th class="mdui-table-col-numeric">状态</th>
         </tr>
         </thead>
+        {% for row in report.mutation %}
         <tbody>
         <tr>
-            <td>EGFR</td>
-            <td>SNV</td>
-            <td>EGFR p.(L858R) c.2573T>G</td>
-            <td>6.9%</td>
-            <td>58</td>
+            <td>{{ row.基因 }}</td>
+            <td>{{ row.突变类型 }}</td>
+            <td>{{ row.突变名称 }}</td>
+            <td>{{ row.突变全称 }}</td>
+            <td>{{ row.突变频率 }}</td>
+            <td>{{ row.覆盖度 }}</td>
             <td>审核通过</td>
         </tr>
-        <tr>
-            <td>EGFR</td>
-            <td>SNV</td>
-            <td>EGFR p.(L858R) c.2573T>G</td>
-            <td>6.9%</td>
-            <td>58</td>
-            <td>审核未通过</td>
-        </tr>
         </tbody>
+        {% endfor %}
     </table>
     <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">通过</a></button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                        href="{{ url_for('rep_bp.runinfo') }}">不通过</a></button>
+            href="{{ url_for('rep_bp.runinfo') }}">通过</a></button>
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+            href="{{ url_for('rep_bp.runinfo') }}">不通过</a></button>
 </div>
 {% endblock %}
