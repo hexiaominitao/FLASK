@@ -85,8 +85,9 @@ def unzip_file(path_report, path_zip, path_vcf, filename, report_id):
                 # print(file_zip)
                 shutil.copy2(os.path.join(zip_root, file_zip), path_file)
             elif file_zip.endswith('full.tsv'):
-                tsvfile = os.path.join(zip_root, file_zip)
+
                 shutil.copy2(os.path.join(zip_root, file_zip), path_file)
+                tsvfile = os.path.join(path_file, file_zip)
             elif file_zip.endswith('QC.pdf'):
                 # print(file_zip)
                 shutil.copy2(os.path.join(zip_root, file_zip), path_file)
@@ -210,7 +211,7 @@ def ir10087(report_id, file, path_report):
 
     out_Report = []
     out_Result = ''
-    title_Report = ['基因', '突变类型', '突变名称', '突变全称', '突变频率', '覆盖度']
+    title_Report = ['基因', '突变类型', '突变名称', '突变全称', '突变频率', '覆盖度','位置']
     for k in range(1, len(out_Mutation)):
         ir_m = out_Mutation[k]
         Protein, Function = ir_m[title.index("protein")].split('|')[0], \
@@ -259,7 +260,7 @@ def ir10087(report_id, file, path_report):
 
         report_AF = ir_m[title.index('AF')].split(',')[0]
         report = [ir_m[title.index("gene")].split('|')[0], Function, Name, Name_a,
-                  report_AF, ir_m[title.index('FAO')]]
+                  report_AF, ir_m[title.index('FAO')],ir_m[title.index('# locus')]]
         out_Report.append(report)
         out_Result = out_Result + Result
     # print('报告结果>>>>>> %s' % out_Result)

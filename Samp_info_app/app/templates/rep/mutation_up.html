@@ -3,6 +3,9 @@
 {% block head %}
 <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">-->
 {% endblock %}
+{% block button %}
+<a href="{{ url_for('rep_bp.seqinfo') }}"><i class="mdui-icon material-icons">arrow_back</i></a>
+{% endblock %}
 {% block content %}
 <div class="col s9">
     <h5>{{ status.sam }}突变信息</h5>

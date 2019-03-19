@@ -3,34 +3,76 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
-{% block page %}报告发送{% endblock %}
+{% block page %}生成报告{% endblock %}
+{% block button %}
+<!--<a href="{{ url_for('rep_bp.upload') }}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">add</i></a>-->
+
+{% endblock %}
 {% block content %}
+
 <div class="mdui-table-fluid">
-    <table class="mdui-table mdui-table-selectable">
-        <thead>
-        <tr>
-            <th>迈景编号</th>
-            <th class="mdui-table-col-numeric">申请单号</th>
-            <th class="mdui-table-col-numeric">质控</th>
-            <th class="mdui-table-col-numeric">突变</th>
-            <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
-            <th class="mdui-table-col-numeric">状态</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>MG1803950</td>
-            <td>MG1866130282</td>
-            <td>质控合格</td>
-            <td>8个突变</td>
-            <td>34%</td>
-            <td>已审核</td>
-        </tr>
-        </tbody>
-    </table>
-    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-            href="{{ url_for('rep_bp.runinfo') }}">上一步</a></button>
-    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-            href="{{ url_for('rep_bp.repinfo') }}">下一步</a></button>
+    <form method="post">
+        <table class="mdui-table">
+            <thead>
+            <tr>
+                <th>
+                    <label class="mdui-checkbox">
+                        <input type="checkbox" class="select-all"/>
+                        <i class="mdui-checkbox-icon"></i>
+                    </label>
+                </th>
+                <th mdui-tooltip="{content: '突变筛选结果解释.'}">迈景编号</th>
+                <th class="mdui-table-col-numeric" mdui-tooltip="{content: '查看申请单.'}">申请单号</th>
+                <th class="mdui-table-col-numeric">样本类型</th>
+                <th class="mdui-table-col-numeric">测序结果</th>
+                <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
+                <th class="mdui-table-col-numeric">状态</th>
+            </tr>
+            </thead>
+            {% for row in report %}
+            <tbody>
+            <tr>
+                <td>
+                    <label class="mdui-checkbox">
+                        <input type="checkbox" class="item" name="check" value="{{row.sam_id}}" />
+                        <i class="mdui-checkbox-icon"></i>
+                    </label>
+                </td>
+                <td>{{ row.sam }}</a></td>
+                <td>{{ row.sam_id }}</td>
+                <td>{{ row.report.样本类型 }}</td>
+                {% if mutation_conut(row.sam_id) %}
+                <td><a href="{{ url_for('rep_bp.musinfo_mg',sample_mg=row.sam_id) }}">{{ mutation_conut(row.sam_id)
+                    }}个突变</a></td>
+                {% else %}
+                <td><a href="{{ url_for('rep_bp.up_mutinfo',sample_mg=row.sam_id) }}" class="mdui-btn mdui-btn-icon">
+                    <i class="mdui-icon material-icons">add</i></a></td>
+                {% endif %}
+                <td>{{ row.report.肿瘤细胞含量 }}</td>
+                <td>{{ row.status }}</td>
+            </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        <input type="submit" name="cancel" value="重新审核">
+        <input type="submit" name="check_f" value="生成报告">
+    </form>
 </div>
+{% endblock %}
+{% block js %}
+<script>
+    var all_select = document.querySelector('.select-all');
+    var items = document.querySelectorAll('.item');
+    all_select.onclick = function () {
+        if (all_select.checked) {
+            for (var i = 0; i < items.length; i++) {
+                items[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < items.length; i++) {
+                items[i].checked = false;
+            }
+        }
+    }
+</script>
 {% endblock %}

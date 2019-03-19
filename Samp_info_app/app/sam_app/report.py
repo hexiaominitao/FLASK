@@ -37,7 +37,7 @@ def index():
     return render_template('seq.html', **df)
 
 
-@rep_bp.route('/runinfo/', methods=['GET', 'POST'])
+@rep_bp.route('/runinfo/', methods=['GET', 'POST'])  # 上机信息
 def runinfo():
     df = {
         "runinfos": RunInfo.query.order_by(RunInfo.start_T.desc()).all()
@@ -65,19 +65,45 @@ def runinfo():
                 report.user = current_user
                 db.session.add(report)
                 db.session.commit()
+        return redirect(url_for('.seqinfo'))
 
     return render_template('runinfo.html', **df, seq_run=seq_run, status_name=status_name)
 
 
-@rep_bp.route('/rep_mut/<sample_mg>')
+@rep_bp.route('/rep_mut/<sample_mg>', methods=['GET', 'POST'])  # 突变初审
 def rep_mut(sample_mg):
     df = {
-        'report': Report.query.filter(Report.sam_id==sample_mg).first()
+        'report': Report.query.filter(Report.sam_id == sample_mg).first()
     }
-    return render_template('rep_mut.html',**df,sample_mg=sample_mg)
+    if 'pass' in request.form:
+        mut_id = request.form.getlist('check')
+        mut_note = request.form.getlist('note')
+        for id, note in zip(mut_id, mut_note):
+            print(id, note)
+            Mutation.query.filter(Mutation.id == id).update({
+                '状态': '初审通过',
+                '备注': note
+            })
+            db.session.commit()
+        return redirect(url_for('.rep_mut', sample_mg=sample_mg))
+    if 'npass' in request.form:
+        mut_id = request.form.getlist('check')
+        mut_note = [x for x in request.form.getlist('note') if x != '']
+        print(mut_id)
+        print(mut_note)
+        for id, note in zip(mut_id, mut_note):
+            print(id, note)
+            Mutation.query.filter(Mutation.id == id).update({
+                '状态': '初审未通过',
+                '备注': note
+            })
+            db.session.commit()
+        return redirect(url_for('.rep_mut', sample_mg=sample_mg))
+
+    return render_template('rep_mut.html', **df, sample_mg=sample_mg)
 
 
-@rep_bp.route('/seqinfo/')
+@rep_bp.route('/seqinfo/', methods=['GET', 'POST'])  # 报告制作
 def seqinfo():
     user = current_user
     df = {
@@ -85,29 +111,131 @@ def seqinfo():
     }
 
     def mutation_conut(sam_id):
-        count = 0
-        mutation = Report.query.filter(Report.sam_id == sam_id).first()
-        if mutation:
-            for _ in mutation.mutation:
-                count +=1
-        return count
+        rep = Report.query.filter(Report.sam_id == sam_id).first()
+        mutation = Mutation.query.filter(Mutation.mutation == rep).all()
+        return len(list(mutation))
 
-    return render_template('seqinfo.html', **df, status_name=status_name,mutation_conut=mutation_conut)
+    if 'cancel' in request.form:
+        report_mg = request.form.getlist('check')
+        for name in report_mg:
+            seq = Report.query.filter(Report.sam_id == name).first()
+            mutation = Mutation.query.filter(Mutation.mutation == seq).all()
+            if mutation:
+                for mut in mutation:
+                    db.session.delete(mut)
+            db.session.delete(seq)
+
+        db.session.commit()
+        return redirect(url_for('.seqinfo'))
+
+    if 'check_f' in request.form:
+        report_mg = request.form.getlist('check')
+        for name in report_mg:
+            rep = Report.query.filter(Report.sam_id == name).first()
+            mutation = Mutation.query.filter(Mutation.mutation == rep).all()
+            if mutation:
+                Report.query.filter(Report.sam_id == name).update({'status': '等待审核'})
+                db.session.commit()
+        return redirect(url_for('.seqinfo'))
+
+    return render_template('seqinfo.html', **df, status_name=status_name, mutation_conut=mutation_conut)
 
 
-@rep_bp.route('/muinfo/')
-def muinfo():
-    return render_template('muinfo.html')
+@rep_bp.route('/muinfo/<sample_mg>', methods=['GET', 'POST'])  # 突变二审
+def muinfo(sample_mg):
+    df = {
+        'report': Report.query.filter(Report.sam_id == sample_mg).first()
+    }
+    if 'pass' in request.form:
+        mut_id = request.form.getlist('check')
+        mut_note = request.form.getlist('note')
+        for id, note in zip(mut_id, mut_note):
+            print(id, note)
+            Mutation.query.filter(Mutation.id == id).update({
+                '状态': '审核通过',
+                '备注': note
+            })
+            db.session.commit()
+        return redirect(url_for('.muinfo', sample_mg=sample_mg))
+    if 'npass' in request.form:
+        mut_id = request.form.getlist('check')
+        mut_note = [x for x in request.form.getlist('note') if x != '']
+        print(mut_id)
+        print(mut_note)
+        for id, note in zip(mut_id, mut_note):
+            print(id, note)
+            Mutation.query.filter(Mutation.id == id).update({
+                '状态': '审核未通过',
+                '备注': note
+            })
+            db.session.commit()
+        return redirect(url_for('.muinfo', sample_mg=sample_mg))
+    return render_template('muinfo.html', **df, sample_mg=sample_mg)
 
 
-@rep_bp.route('/mufinfo/')
+@rep_bp.route('/mufinfo/', methods=['GET', 'POST'])  # 结果二审
 def mufinfo():
-    return render_template('mufinfo.html')
+    df = {
+        'report': Report.query.filter(Report.status == '等待审核').all()
+    }
+
+    def mutation_conut(sam_id):
+        rep = Report.query.filter(Report.sam_id == sam_id).first()
+        mutation_all = Mutation.query.filter(Mutation.mutation == rep).all()
+
+        return len(list(mutation_all))
+
+    if 'cancel' in request.form:
+        report_mg = request.form.getlist('check')
+        for name in report_mg:
+            Report.query.filter(Report.sam_id == name).update({'status': '制作中'})
+
+        db.session.commit()
+        return redirect(url_for('.mufinfo'))
+
+    if 'check_f' in request.form:
+        report_mg = request.form.getlist('check')
+        for name in report_mg:
+            Report.query.filter(Report.sam_id == name).update({'status': '审核通过'})
+        db.session.commit()
+        return redirect(url_for('.mufinfo'))
+    return render_template('mufinfo.html', **df, status_name=status_name, mutation_conut=mutation_conut)
 
 
-@rep_bp.route('/musinfo/')
+@rep_bp.route('/musinfo/', methods=['GET', 'POST'])  # 生成报告
 def musinfo():
-    return render_template('musinfo.html')
+    df = {
+        'report': Report.query.filter(Report.status == '审核通过').all()
+    }
+
+    def mutation_conut(sam_id):
+        rep = Report.query.filter(Report.sam_id == sam_id).first()
+        mutation_all = Mutation.query.filter(Mutation.mutation == rep).all()
+        return len(list(mutation_all))
+
+    if 'cancel' in request.form:
+        report_mg = request.form.getlist('check')
+        for name in report_mg:
+            Report.query.filter(Report.sam_id == name).update({'status': '等待审核'})
+
+        db.session.commit()
+        return redirect(url_for('.musinfo'))
+
+    if 'check_f' in request.form:
+        report_mg = request.form.getlist('check')
+        for name in report_mg:
+            Report.query.filter(Report.sam_id == name).update({'status': '审核完成'})
+        db.session.commit()
+        return redirect(url_for('.musinfo'))
+    return render_template('musinfo.html', **df, status_name=status_name, mutation_conut=mutation_conut)
+
+
+@rep_bp.route('/musinfo/<sample_mg>/', methods=['GET', 'POST'])  # 生成报告
+def musinfo_mg(sample_mg):
+    df = {
+        'report': Report.query.filter(Report.sam_id == sample_mg).first()
+    }
+    return render_template('mutation_f.html', **df, sample_mg=sample_mg)
 
 
 @rep_bp.route('/repinfo/')
@@ -178,7 +306,7 @@ def up_seqinfo():
     return render_template('seq_up.html', form=form)
 
 
-@rep_bp.route('/upload/<sample_mg>/',methods=['GET', 'POST'])
+@rep_bp.route('/upload/<sample_mg>/', methods=['GET', 'POST'])
 def up_mutinfo(sample_mg):
     form = MuUpForm()
     status = Report.query.filter(Report.sam_id == sample_mg).first()
@@ -197,19 +325,19 @@ def up_mutinfo(sample_mg):
                     def mutat_ion(item):
                         return row[title_mu.index(item)]
 
-                    mutations = Mutation(基因=mutat_ion('基因'),
-                                         突变类型=mutat_ion('突变类型'),
-                                         突变名称=mutat_ion('突变名称'),
-                                         突变全称=mutat_ion('突变全称'),
-                                         突变频率=mutat_ion('突变频率'),
-                                         覆盖度=mutat_ion('覆盖度'),
-                                         mutation=status
-                                         )
-
-                    if Mutation.query.filter(and_(Mutation.基因 == mutat_ion('基因'), Mutation.report == status.id,
-                                                  Mutation.突变名称 == mutat_ion('突变名称'))).first():
+                    if Mutation.query.filter(and_(Mutation.突变全称 == mutat_ion('突变全称'),
+                                                  Mutation.mutation == status)).first():
                         pass
                     else:
+                        mutations = Mutation(基因=mutat_ion('基因'),
+                                             突变类型=mutat_ion('突变类型'),
+                                             突变名称=mutat_ion('突变名称'),
+                                             突变全称=mutat_ion('突变全称'),
+                                             突变频率=mutat_ion('突变频率'),
+                                             覆盖度=mutat_ion('覆盖度'),
+                                             位置=mutat_ion('位置'), 状态='未审核',
+                                             mutation=status
+                                             )
                         db.session.add(mutations)
                     db.session.commit()
                     archive_file(path_report, sample_mg)

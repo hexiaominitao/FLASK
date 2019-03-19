@@ -3,52 +3,74 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
-{% block page %}结果初审{% endblock %}
+{% block page %}{{ sample_mg }}-突变详情{% endblock %}
+{% block button %}
+<a href="{{ url_for('rep_bp.mufinfo') }}"><i class="mdui-icon material-icons">arrow_back</i></a>
+{% endblock %}
 {% block content %}
 <div class="mdui-table-fluid">
-    <table class="mdui-table mdui-table-selectable">
-        <thead>
-        <tr>
-            <th>迈景编号</th>
-            <th class="mdui-table-col-numeric">申请单号</th>
-            <th class="mdui-table-col-numeric">质控</th>
-            <th class="mdui-table-col-numeric">突变</th>
-            <th class="mdui-table-col-numeric">肿瘤细胞占比(%)</th>
-            <th class="mdui-table-col-numeric">状态</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>MG1803950</td>
-            <td>MG1866130282</td>
-            <td>质控合格</td>
-            <td>8个突变</td>
-            <td>34%</td>
-            <td>未审核</td>
-        </tr>
-        <tr>
-            <td>MG1803950</td>
-            <td>MG1866130282</td>
-            <td>质控合格</td>
-            <td>8个突变</td>
-            <td>34%</td>
-            <td>未审核</td>
-        </tr>
-        <tr>
-            <td>MG1803950</td>
-            <td>MG1866130282</td>
-            <td>质控合格</td>
-            <td>8个突变</td>
-            <td>34%</td>
-            <td>未审核</td>
-        </tr>
-        </tbody>
-    </table>
-    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-            href="{{ url_for('rep_bp.seqinfo') }}">上一步</a></button>
-    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-            href="{{ url_for('rep_bp.mufinfo') }}">下一步</a></button>
+    <form method="post">
+        <table class="mdui-table">
+            <thead>
+            <tr>
+                <th>
+                    <label class="mdui-checkbox">
+                        <input type="checkbox" class="select-all"/>
+                        <i class="mdui-checkbox-icon"></i>
+                    </label>
+                </th>
+                <th>位置</th>
+                <th class="mdui-table-col-numeric">突变名称</th>
+                <!--<th>基因</th>-->
+                <th class="mdui-table-col-numeric">突变类型</th>
+                <!--<th class="mdui-table-col-numeric">突变全称</th>-->
+                <th class="mdui-table-col-numeric">突变频率</th>
+                <th class="mdui-table-col-numeric">覆盖度</th>
+                <th class="mdui-table-col-numeric">状态</th>
+                <th class="mdui-table-col-numeric">备注</th>
+            </tr>
+            </thead>
+            {% for row in report.mutation %}
+            <tbody>
+            <tr>
+                <td>
+                    <label class="mdui-checkbox">
+                        <input type="checkbox" class="item" name="check" value="{{row.id}}"/>
+                        <i class="mdui-checkbox-icon"></i>
+                    </label>
+                </td>
+                <td>{{ row.位置 }}</td>
+                 <td>{{ row.突变名称 }}</td>
+                <!--<td>{{ row.基因 }}</td>-->
+                <td>{{ row.突变类型 }}</td>
+                <!--<td>{{ row.突变全称 }}</td>-->
+                <td>{{ row.突变频率 }}</td>
+                <td>{{ row.覆盖度 }}</td>
+                <td>{{ row.状态 }}</td>
+                <td><input type="text" name="note" placeholder="{{ row.备注 }}"></td>
+            </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        <input type="submit" name="pass" value="通过">
+        <input type="submit" name="npass" value="不合格">
+    </form>
 </div>
-
-
+{% endblock %}
+{% block js %}
+<script>
+    var all_select = document.querySelector('.select-all');
+    var items = document.querySelectorAll('.item');
+    all_select.onclick = function () {
+        if (all_select.checked) {
+            for (var i = 0; i < items.length; i++) {
+                items[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < items.length; i++) {
+                items[i].checked = false;
+            }
+        }
+    }
+</script>
 {% endblock %}

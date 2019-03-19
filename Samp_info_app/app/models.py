@@ -254,12 +254,15 @@ class Report(db.Model):
 
 class Mutation(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    基因 = db.Column(db.String(50), nullable=False)
-    突变类型 = db.Column(db.String(50), nullable=False)
-    突变名称 = db.Column(db.String(50), nullable=False)
-    突变全称 = db.Column(db.String(50), nullable=False)
-    突变频率 = db.Column(db.String(50), nullable=False)
-    覆盖度 = db.Column(db.String(50), nullable=False)
+    基因 = db.Column(db.String(100), nullable=False)
+    突变类型 = db.Column(db.String(100), nullable=False)
+    突变名称 = db.Column(db.String(100), nullable=False)
+    突变全称 = db.Column(db.String(100), nullable=False)
+    突变频率 = db.Column(db.String(100), nullable=False)
+    覆盖度 = db.Column(db.String(100), nullable=False)
+    位置 = db.Column(db.String(100),nullable=False)
+    状态 = db.Column(db.String(100),nullable=False)
+    备注 = db.Column(db.String(100),nullable=True)
     report = db.Column(db.Integer(), db.ForeignKey('report.id'))
 
 
